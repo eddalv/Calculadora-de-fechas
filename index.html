@@ -95,7 +95,7 @@
             font-size: 16px;
         }
         /* Estilos de las calculadoras */
-        #calculadora-dias, #calculadora-fechas, .calendar {
+        #calculadora-dias, #calculadora-fechas, #resta-dias, .calendar {
             background-color: white;
             padding: 20px;
             margin-top: 20px;
@@ -387,6 +387,7 @@
         <div class="calculator-buttons">
             <button id="calculadora-dias-btn" class="active">Calculadora de Días</button>
             <button id="calculadora-fechas-btn">Calculadora de Fechas</button>
+            <button id="resta-dias-btn">Resta días</button>
         </div>
 
         <!-- "Hoy es" -->
@@ -402,7 +403,8 @@
                     <h2>Calculadora de Días</h2>
                     <div class="calculator-inputs">
                         <label for="fecha-inicial">Fecha Inicial:</label><br>
-                        <input type="date" id="fecha-inicial"><br>
+                        <input type="date" id="fecha-inicial" min="">
+                        <br>
                         <label for="dias-a-sumar">Número de días a sumar (15 a 90):</label><br>
                         <input type="number" id="dias-a-sumar" min="15" max="90"><br>
                     </div>
@@ -435,6 +437,27 @@
                     <div>
                         <h3>Número de días:</h3>
                         <p id="resultado-fechas"></p>
+                    </div>
+                </div>
+
+                <!-- Resta Días -->
+                <div id="resta-dias" style="display:none;">
+                    <h2>Resta Días</h2>
+                    <div class="calculator-inputs">
+                        <label for="fecha-resta">Fecha:</label><br>
+                        <input type="date" id="fecha-resta"><br>
+                        <label for="dias-a-restar">Número de días a restar:</label><br>
+                        <input type="number" id="dias-a-restar" min="1"><br>
+                    </div>
+                    <div style="text-align: center;">
+                        <input type="checkbox" id="excluir-dias-resta" checked>
+                        <label for="excluir-dias-resta">Excluir domingos y días festivos oficiales en México</label><br><br>
+                        <button id="calcular-resta-dias-btn">Calcular</button>
+                    </div>
+                    <div>
+                        <h3>Fecha Resultado:</h3>
+                        <p id="resultado-resta-dias"></p>
+                        <button id="solicitar-congelamiento-resta-btn" style="display: none;">Solicitar congelamiento</button>
                     </div>
                 </div>
             </div>
@@ -624,16 +647,24 @@
 
         // Mostrar/ocultar calculadoras y resaltar botón activo
         function showCalculator(calculator) {
+            // Ocultar todas las calculadoras
+            document.getElementById('calculadora-dias').style.display = 'none';
+            document.getElementById('calculadora-fechas').style.display = 'none';
+            document.getElementById('resta-dias').style.display = 'none';
+            // Remover clase active de todos los botones
+            document.getElementById('calculadora-dias-btn').classList.remove('active');
+            document.getElementById('calculadora-fechas-btn').classList.remove('active');
+            document.getElementById('resta-dias-btn').classList.remove('active');
+            // Mostrar la calculadora seleccionada y activar el botón
             if (calculator === 'dias') {
                 document.getElementById('calculadora-dias').style.display = 'block';
-                document.getElementById('calculadora-fechas').style.display = 'none';
                 document.getElementById('calculadora-dias-btn').classList.add('active');
-                document.getElementById('calculadora-fechas-btn').classList.remove('active');
-            } else {
-                document.getElementById('calculadora-dias').style.display = 'none';
+            } else if (calculator === 'fechas') {
                 document.getElementById('calculadora-fechas').style.display = 'block';
-                document.getElementById('calculadora-dias-btn').classList.remove('active');
                 document.getElementById('calculadora-fechas-btn').classList.add('active');
+            } else if (calculator === 'resta-dias') {
+                document.getElementById('resta-dias').style.display = 'block';
+                document.getElementById('resta-dias-btn').classList.add('active');
             }
         }
 
@@ -652,6 +683,13 @@
             document.getElementById('excluir-dias-fechas').checked = true;
             document.getElementById('resultado-fechas').innerText = '';
 
+            // Reset Resta Días
+            document.getElementById('fecha-resta').value = '';
+            document.getElementById('dias-a-restar').value = '';
+            document.getElementById('excluir-dias-resta').checked = true;
+            document.getElementById('resultado-resta-dias').innerText = '';
+            document.getElementById('solicitar-congelamiento-resta-btn').style.display = 'none';
+
             // Reset Solicitud de Congelamiento
             document.getElementById('formulario-congelamiento').style.display = 'none';
             document.getElementById('main-content').style.display = 'flex';
@@ -667,18 +705,36 @@
             document.getElementById('texto-generado').value = '';
         }
 
+        // Asignar eventos a los botones de calculadora
         document.getElementById('calculadora-dias-btn').addEventListener('click', function() {
             showCalculator('dias');
             resetForms();
+            // Establecer el min de fecha-inicial al día de hoy
+            let todayISO = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha-inicial').setAttribute('min', todayISO);
         });
 
         document.getElementById('calculadora-fechas-btn').addEventListener('click', function() {
             showCalculator('fechas');
             resetForms();
+            // Eliminar el min del fecha-inicial si estaba establecido
+            document.getElementById('fecha-inicial').removeAttribute('min');
         });
 
-        // Mostrar la calculadora de días por defecto
-        showCalculator('dias');
+        document.getElementById('resta-dias-btn').addEventListener('click', function() {
+            showCalculator('resta-dias');
+            resetForms();
+            // Eliminar el min del fecha-resta si estaba establecido
+            document.getElementById('fecha-resta').removeAttribute('min');
+        });
+
+        // Mostrar la calculadora de días por defecto al cargar la página
+        window.onload = function() {
+            showCalculator('dias');
+            // Establecer el min de fecha-inicial al día de hoy
+            let todayISO = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha-inicial').setAttribute('min', todayISO);
+        }
 
         // Función para obtener días festivos de un año dado
         async function fetchHolidays(year) {
@@ -710,7 +766,7 @@
             let fecha = new Date(fechaInicial);
             let diasSumados = 0;
 
-            // Validar que la fecha inicial sea a futuro
+            // Validar que la fecha inicial sea a futuro o presente
             let todayDate = new Date();
             todayDate.setHours(0,0,0,0); // Ignorar tiempo
             if (fecha < todayDate) {
@@ -781,13 +837,7 @@
             let startDate = new Date(fecha1);
             let endDate = new Date(fecha2);
 
-            // Validar que ambas fechas sean a futuro
-            let todayDate = new Date();
-            todayDate.setHours(0,0,0,0); // Ignorar tiempo
-            if (startDate < todayDate || endDate < todayDate) {
-                showModal('Ambas fechas deben ser posteriores o iguales al día de hoy.');
-                return;
-            }
+            // No hay restricciones en fechas pasadas, presentes o futuras
 
             if (endDate < startDate) {
                 showModal('La Fecha 2 debe ser posterior o igual a la Fecha 1.');
@@ -832,7 +882,66 @@
             document.getElementById('resultado-fechas').innerText = daysCount + ' días';
         });
 
-        // Mostrar formulario de congelamiento
+        // Resta Días
+        document.getElementById('calcular-resta-dias-btn').addEventListener('click', async function() {
+            let fechaResta = document.getElementById('fecha-resta').value;
+            let diasARestar = parseInt(document.getElementById('dias-a-restar').value);
+            let excluirDias = document.getElementById('excluir-dias-resta').checked;
+
+            if (!fechaResta || !diasARestar) {
+                showModal('Por favor ingrese la fecha y el número de días a restar.');
+                return;
+            }
+
+            let fecha = new Date(fechaResta);
+            let diasRestados = 0;
+
+            // No hay restricciones en la fecha para Resta Días (puede ser pasada, presente o futura)
+
+            // Obtener lista de días festivos
+            let years = [];
+            let currentYear = fecha.getFullYear();
+            let startDate = new Date(fecha);
+            startDate.setDate(startDate.getDate() - diasARestar - 100);
+            let startYear = startDate.getFullYear();
+
+            for (let y = startYear; y <= currentYear; y++) {
+                years.push(y);
+            }
+            let holidays = [];
+
+            if (excluirDias) {
+                // Obtener festivos para cada año
+                for (let y of years) {
+                    let h = await fetchHolidays(y);
+                    holidays = holidays.concat(h);
+                }
+            }
+
+            while (diasRestados < diasARestar) {
+                fecha.setDate(fecha.getDate() - 1);
+                let dayOfWeek = fecha.getDay();
+                let formattedDate = fecha.toISOString().split('T')[0];
+
+                if (excluirDias && (dayOfWeek === 0 || holidays.includes(formattedDate))) {
+                    continue;
+                }
+                diasRestados++;
+            }
+
+            // Formatear la fecha resultado
+            let options = { day: 'numeric', month: 'long', year: 'numeric' };
+            let fechaResultado = fecha.toLocaleDateString('es-ES', options);
+
+            document.getElementById('resultado-resta-dias').innerText = fechaResultado;
+            document.getElementById('solicitar-congelamiento-resta-btn').style.display = 'inline-block';
+
+            // Guardar fechas para el formulario
+            window.fechaInicioCongelamientoResta = fecha.toISOString().split('T')[0];
+            window.fechaFinCongelamientoResta = fechaResta;
+        });
+
+        // Mostrar formulario de congelamiento para "Calculadora de Días"
         document.getElementById('solicitar-congelamiento-btn').addEventListener('click', function() {
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('formulario-congelamiento').style.display = 'block';
@@ -842,11 +951,23 @@
             document.getElementById('fecha-fin').value = window.fechaFinCongelamiento;
         });
 
+        // Mostrar formulario de congelamiento para "Resta Días"
+        document.getElementById('solicitar-congelamiento-resta-btn').addEventListener('click', function() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('formulario-congelamiento').style.display = 'block';
+
+            // Rellenar fechas automáticamente
+            document.getElementById('fecha-inicio').value = window.fechaInicioCongelamientoResta;
+            document.getElementById('fecha-fin').value = window.fechaFinCongelamientoResta;
+        });
+
         // Flecha de regreso
         document.getElementById('back-arrow').addEventListener('click', function() {
             document.getElementById('formulario-congelamiento').style.display = 'none';
             document.getElementById('main-content').style.display = 'flex';
             resetForms();
+            // Restaurar la calculadora seleccionada
+            // Puedes añadir lógica adicional si es necesario
         });
 
         // Mostrar u ocultar campo "Otro" en cliente de correo
