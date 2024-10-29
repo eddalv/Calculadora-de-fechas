@@ -45,9 +45,7 @@
             border: none;
             border-radius: 15px;
             font-size: 16px;
-            width: auto;
             cursor: pointer;
-            display: inline-block;
             transition: background-color 0.3s;
         }
         .calculator-buttons button.active {
@@ -96,7 +94,7 @@
             border-radius: 15px;
         }
         /* Estilos de las calculadoras */
-        #calculadora-dias, #calculadora-fechas, .calendar, #solicitud-congelamiento {
+        #calculadora-dias, #calculadora-fechas, .calendar {
             background-color: white;
             padding: 20px;
             margin-top: 20px;
@@ -106,6 +104,68 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+        /* Estilos para el formulario de congelamiento */
+        #formulario-congelamiento {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+        }
+        /* Leyenda lateral en el formulario */
+        .left-legend {
+            width: 30%;
+            padding-right: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #333;
+        }
+        .left-legend b {
+            font-weight: bold;
+        }
+        .form-container {
+            display: flex;
+        }
+        .form-fields {
+            width: 70%;
+        }
+        .form-fields label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .form-fields input, .form-fields textarea {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+        .form-fields textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .form-buttons {
+            text-align: center;
+        }
+        .form-buttons button {
+            background-color: #0074BC;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .form-buttons button:hover {
+            background-color: #005b9a;
         }
         /* Footer */
         footer {
@@ -121,9 +181,7 @@
             text-align: center;
         }
         .calculator-inputs input[type="date"],
-        .calculator-inputs input[type="number"],
-        .calculator-inputs input[type="text"],
-        .calculator-inputs textarea {
+        .calculator-inputs input[type="number"] {
             width: 80%;
             max-width: 200px;
             padding: 12px;
@@ -180,11 +238,6 @@
             color: #0074BC;
             font-size: 20px;
         }
-        .calendar-legend {
-            color: #F6931D;
-            text-align: center;
-            margin-bottom: 10px;
-        }
         .calendar table {
             width: 100%;
             border-collapse: collapse;
@@ -212,19 +265,6 @@
             background-color: #F6931D;
             color: white;
         }
-        /* Estilos para la solicitud de congelamiento */
-        #solicitud-congelamiento {
-            display: none;
-        }
-        .leyenda-congelamiento {
-            width: 100%;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 14px;
-        }
-        .leyenda-congelamiento strong {
-            font-weight: bold;
-        }
         /* Responsive */
         @media (max-width: 800px) {
             .main-container {
@@ -237,8 +277,14 @@
             .right-side {
                 margin-top: 20px;
             }
-            .leyenda-congelamiento {
-                text-align: center;
+            .form-container {
+                flex-direction: column;
+            }
+            .left-legend, .form-fields {
+                width: 100%;
+            }
+            .left-legend {
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -273,94 +319,102 @@
             <p id="hoy-es"></p>
         </div>
 
-        <!-- Contenedor principal -->
-        <div id="main-content">
-            <div class="main-container">
-                <!-- Centro: Calculadoras -->
-                <div class="center-content">
-                    <!-- Calculadora de Días -->
-                    <div id="calculadora-dias">
-                        <h2>Calculadora de Días</h2>
-                        <div class="calculator-inputs">
-                            <label for="fecha-inicial">Fecha Inicial:</label><br>
-                            <input type="date" id="fecha-inicial"><br>
-                            <label for="dias-a-sumar">Número de días a sumar (15 a 90):</label><br>
-                            <input type="number" id="dias-a-sumar" min="15" max="90"><br>
-                        </div>
-                        <div style="text-align: center;">
-                            <input type="checkbox" id="excluir-dias" checked>
-                            <label for="excluir-dias">Excluir domingos y días festivos oficiales en México</label><br><br>
-                            <button id="calcular-dias-btn">Calcular</button>
-                        </div>
-                        <div>
-                            <h3>Fecha Resultado:</h3>
-                            <p id="resultado-dias"></p>
-                            <!-- Botón para solicitar congelamiento -->
-                            <button id="solicitar-congelamiento-btn" style="display:none;">Solicitar congelamiento</button>
-                        </div>
+        <div class="main-container" id="main-content">
+            <!-- Centro: Calculadoras -->
+            <div class="center-content">
+                <!-- Calculadora de Días -->
+                <div id="calculadora-dias">
+                    <h2>Calculadora de Días</h2>
+                    <div class="calculator-inputs">
+                        <label for="fecha-inicial">Fecha Inicial:</label><br>
+                        <input type="date" id="fecha-inicial"><br>
+                        <label for="dias-a-sumar">Número de días a sumar (15 a 90):</label><br>
+                        <input type="number" id="dias-a-sumar" min="15" max="90"><br>
                     </div>
-                    
-                    <!-- Calculadora de Fechas -->
-                    <div id="calculadora-fechas" style="display:none;">
-                        <h2>Calculadora de Fechas</h2>
-                        <div class="calculator-inputs">
-                            <label for="fecha1">Fecha 1:</label><br>
-                            <input type="date" id="fecha1"><br>
-                            <label for="fecha2">Fecha 2:</label><br>
-                            <input type="date" id="fecha2"><br>
-                        </div>
-                        <div style="text-align: center;">
-                            <input type="checkbox" id="excluir-dias-fechas" checked>
-                            <label for="excluir-dias-fechas">Excluir domingos y días festivos oficiales en México</label><br><br>
-                            <button id="calcular-fechas-btn">Calcular</button>
-                        </div>
-                        <div>
-                            <h3>Número de días:</h3>
-                            <p id="resultado-fechas"></p>
-                        </div>
+                    <div style="text-align: center;">
+                        <input type="checkbox" id="excluir-dias" checked>
+                        <label for="excluir-dias">Excluir domingos y días festivos oficiales en México</label><br><br>
+                        <button id="calcular-dias-btn">Calcular</button>
                     </div>
-
-                    <!-- Solicitud de congelamiento -->
-                    <div id="solicitud-congelamiento">
-                        <h2>Solicitud de Congelamiento</h2>
-                        <div class="leyenda-congelamiento">
-                            <p>
-                                <strong>RECUERDA QUE SOLO PUEDES CONGELAR FECHAS POSTERIORES AL DÍA PRESENTE. Copia el texto generado y envíalo al correo atencionacademica.cg@linguatec.com.mx con el asunto SOLICITUD DE CONGELAMIENTO (TU NOMBRE Y MATRÍCULA)</strong>
-                            </p>
-                        </div>
-                        <div class="calculator-inputs">
-                            <label for="nombre">Nombre:</label><br>
-                            <input type="text" id="nombre"><br>
-                            <label for="matricula">Matrícula:</label><br>
-                            <input type="text" id="matricula"><br>
-                            <label for="filial">Filial:</label><br>
-                            <input type="text" id="filial"><br>
-                            <label for="motivo">Motivo de congelamiento:</label><br>
-                            <textarea id="motivo" rows="3"></textarea><br>
-                        </div>
-                        <div style="text-align: center;">
-                            <button id="generar-texto-btn">Generar</button>
-                        </div>
-                        <div>
-                            <h3>Texto Generado:</h3>
-                            <textarea id="texto-generado" rows="8" style="width: 100%;"></textarea><br>
-                            <button id="copiar-texto-btn">Copiar texto</button>
-                        </div>
+                    <div>
+                        <h3>Fecha Resultado:</h3>
+                        <p id="resultado-dias"></p>
+                        <button id="solicitar-congelamiento-btn" style="display: none;">Solicitar congelamiento</button>
                     </div>
                 </div>
-                <!-- Derecha: Calendario -->
-                <div class="right-side">
-                    <div class="calendar">
-                        <div class="calendar-header">
-                            <button id="prev-month">&lt;</button>
-                            <h3 id="calendar-month-year"></h3>
-                            <button id="next-month">&gt;</button>
-                        </div>
-                        <p class="calendar-legend">RECUERDA QUE SOLO PUEDES CONGELAR FECHAS FUTURAS SIN CONTAR DOMINGOS NI DÍAS FESTIVOS</p>
-                        <table id="calendar-table">
-                            <!-- El calendario será generado por JavaScript -->
-                        </table>
+                
+                <!-- Calculadora de Fechas -->
+                <div id="calculadora-fechas" style="display:none;">
+                    <h2>Calculadora de Fechas</h2>
+                    <div class="calculator-inputs">
+                        <label for="fecha1">Fecha 1:</label><br>
+                        <input type="date" id="fecha1"><br>
+                        <label for="fecha2">Fecha 2:</label><br>
+                        <input type="date" id="fecha2"><br>
                     </div>
+                    <div style="text-align: center;">
+                        <input type="checkbox" id="excluir-dias-fechas" checked>
+                        <label for="excluir-dias-fechas">Excluir domingos y días festivos oficiales en México</label><br><br>
+                        <button id="calcular-fechas-btn">Calcular</button>
+                    </div>
+                    <div>
+                        <h3>Número de días:</h3>
+                        <p id="resultado-fechas"></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Derecha: Calendario -->
+            <div class="right-side" id="calendar-container">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button id="prev-month">&lt;</button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button id="next-month">&gt;</button>
+                    </div>
+                    <table id="calendar-table">
+                        <!-- El calendario será generado por JavaScript -->
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de congelamiento -->
+        <div id="formulario-congelamiento">
+            <h2>Solicitud de congelamiento</h2>
+            <div class="form-container">
+                <div class="left-legend">
+                    <p>
+                        <b>RECUERDA QUE SOLO PUEDES CONGELAR FECHAS POSTERIORES AL DÍA PRESENTE.</b> Copia el texto generado y envíalo al correo <b>atencionacademica.cg@linguatec.com.mx</b> con el asunto <b>SOLICITUD DE CONGELAMIENTO (TU NOMBRE Y MATRÍCULA)</b>
+                    </p>
+                </div>
+                <div class="form-fields">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre">
+
+                    <label for="matricula">Matrícula:</label>
+                    <input type="text" id="matricula">
+
+                    <label for="filial">Filial:</label>
+                    <input type="text" id="filial">
+
+                    <label for="fecha-inicio">Fecha de inicio de congelamiento:</label>
+                    <input type="date" id="fecha-inicio">
+
+                    <label for="fecha-fin">Fecha de término de congelamiento:</label>
+                    <input type="date" id="fecha-fin">
+
+                    <label for="motivo">Motivo de congelamiento:</label>
+                    <textarea id="motivo"></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button id="generar-texto-btn">Generar</button>
+            </div>
+            <div>
+                <h3>Texto generado:</h3>
+                <textarea id="texto-generado" readonly style="width: 100%; height: 200px;"></textarea>
+                <div class="form-buttons">
+                    <button id="copiar-texto-btn">Copiar texto</button>
                 </div>
             </div>
         </div>
@@ -461,8 +515,6 @@
 
         // Mostrar/ocultar calculadoras y resaltar botón activo
         function showCalculator(calculator) {
-            document.getElementById('solicitud-congelamiento').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
             if (calculator === 'dias') {
                 document.getElementById('calculadora-dias').style.display = 'block';
                 document.getElementById('calculadora-fechas').style.display = 'none';
@@ -478,10 +530,14 @@
 
         document.getElementById('calculadora-dias-btn').addEventListener('click', function() {
             showCalculator('dias');
+            document.getElementById('formulario-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
         });
 
         document.getElementById('calculadora-fechas-btn').addEventListener('click', function() {
             showCalculator('fechas');
+            document.getElementById('formulario-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
         });
 
         // Mostrar la calculadora de días por defecto
@@ -489,10 +545,15 @@
 
         // Función para obtener días festivos de un año dado
         async function fetchHolidays(year) {
-            let response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/MX`);
-            let data = await response.json();
-            let holidays = data.map(holiday => holiday.date);
-            return holidays;
+            try {
+                let response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/MX`);
+                let data = await response.json();
+                let holidays = data.map(holiday => holiday.date);
+                return holidays;
+            } catch (error) {
+                console.error('Error fetching holidays:', error);
+                return [];
+            }
         }
 
         // Calculadora de Días
@@ -545,55 +606,11 @@
             let fechaResultado = fecha.toLocaleDateString('es-ES', options);
 
             document.getElementById('resultado-dias').innerText = fechaResultado;
+            document.getElementById('solicitar-congelamiento-btn').style.display = 'inline-block';
 
-            // Mostrar el botón de solicitar congelamiento
-            document.getElementById('solicitar-congelamiento-btn').style.display = 'block';
-        });
-
-        // Evento para el botón "Solicitar congelamiento"
-        document.getElementById('solicitar-congelamiento-btn').addEventListener('click', function() {
-            // Ocultar calculadora y calendario
-            document.getElementById('main-content').style.display = 'none';
-            // Mostrar formulario de solicitud
-            document.getElementById('solicitud-congelamiento').style.display = 'block';
-
-            // Prellenar fechas
-            let fechaInicio = document.getElementById('fecha-inicial').value;
-            let fechaTermino = document.getElementById('resultado-dias').innerText;
-
-            // Formatear fecha de inicio
-            let fechaInicioObj = new Date(fechaInicio);
-            let options = { day: 'numeric', month: 'long', year: 'numeric' };
-            let fechaInicioFormateada = fechaInicioObj.toLocaleDateString('es-ES', options);
-
-            // Guardar fechas en campos ocultos (si es necesario)
-            document.getElementById('fecha-inicio-congelamiento').value = fechaInicioFormateada;
-            document.getElementById('fecha-termino-congelamiento').value = fechaTermino;
-        });
-
-        // Generar texto de solicitud
-        document.getElementById('generar-texto-btn').addEventListener('click', function() {
-            let nombre = document.getElementById('nombre').value;
-            let matricula = document.getElementById('matricula').value;
-            let filial = document.getElementById('filial').value;
-            let motivo = document.getElementById('motivo').value;
-
-            let fechaInicioFormateada = document.getElementById('fecha-inicio-congelamiento').value;
-            let fechaTermino = document.getElementById('fecha-termino-congelamiento').value;
-
-            // Crear texto
-            let texto = `¡Buen día!\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicioFormateada}\nFecha de término del congelamiento: ${fechaTermino}\nMotivo: ${motivo}`;
-
-            document.getElementById('texto-generado').value = texto;
-        });
-
-        // Copiar texto al portapapeles
-        document.getElementById('copiar-texto-btn').addEventListener('click', function() {
-            let texto = document.getElementById('texto-generado');
-            texto.select();
-            texto.setSelectionRange(0, 99999); // Para dispositivos móviles
-            document.execCommand('copy');
-            alert('Texto copiado al portapapeles.');
+            // Guardar fechas para el formulario
+            window.fechaInicioCongelamiento = fechaInicial;
+            window.fechaFinCongelamiento = fecha.toISOString().split('T')[0];
         });
 
         // Calculadora de Fechas
@@ -651,6 +668,54 @@
             }
 
             document.getElementById('resultado-fechas').innerText = daysCount + ' días';
+        });
+
+        // Mostrar formulario de congelamiento
+        document.getElementById('solicitar-congelamiento-btn').addEventListener('click', function() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('formulario-congelamiento').style.display = 'block';
+
+            // Rellenar fechas automáticamente
+            document.getElementById('fecha-inicio').value = window.fechaInicioCongelamiento;
+            document.getElementById('fecha-fin').value = window.fechaFinCongelamiento;
+        });
+
+        // Generar texto
+        document.getElementById('generar-texto-btn').addEventListener('click', function() {
+            let nombre = document.getElementById('nombre').value.trim();
+            let matricula = document.getElementById('matricula').value.trim();
+            let filial = document.getElementById('filial').value.trim();
+            let fechaInicio = document.getElementById('fecha-inicio').value;
+            let fechaFin = document.getElementById('fecha-fin').value;
+            let motivo = document.getElementById('motivo').value.trim();
+
+            if (!nombre || !matricula || !filial || !fechaInicio || !fechaFin || !motivo) {
+                alert('Por favor complete todos los campos.');
+                return;
+            }
+
+            // Formatear fechas
+            let options = { day: 'numeric', month: 'long', year: 'numeric' };
+            let fechaInicioFormateada = new Date(fechaInicio).toLocaleDateString('es-ES', options);
+            let fechaFinFormateada = new Date(fechaFin).toLocaleDateString('es-ES', options);
+
+            let textoGenerado = `¡Buen día!\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicioFormateada}\nFecha de término del congelamiento: ${fechaFinFormateada}\nMotivo: ${motivo}`;
+
+            document.getElementById('texto-generado').value = textoGenerado;
+        });
+
+        // Copiar texto
+        document.getElementById('copiar-texto-btn').addEventListener('click', function() {
+            let texto = document.getElementById('texto-generado');
+            texto.select();
+            texto.setSelectionRange(0, 99999); // Para dispositivos móviles
+
+            try {
+                document.execCommand('copy');
+                alert('Texto copiado al portapapeles.');
+            } catch (err) {
+                alert('No se pudo copiar el texto.');
+            }
         });
     </script>
 </body>
