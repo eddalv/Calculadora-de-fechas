@@ -238,6 +238,12 @@
             color: #0074BC;
             font-size: 20px;
         }
+        .calendar-legend {
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
         .calendar table {
             width: 100%;
             border-collapse: collapse;
@@ -299,7 +305,7 @@
             </a>
         </div>
         <!-- Centro: Título -->
-        <h1>Calculadora de CONGELAMIENTOS LINGUATEC ®</h1>
+        <h1>Calculadora de fechas LINGUATEC ®</h1>
         <!-- Derecha: Botón Aalex -->
         <div id="aalex-button">
             <a href="https://linguatec.schoolibox.com/">Aalex</a>
@@ -310,8 +316,8 @@
     <main>
         <!-- Botones para seleccionar calculadoras -->
         <div class="calculator-buttons">
-            <button id="calculadora-dias-btn" class="active">Calculadora de días a congelar</button>
-            <button id="calculadora-fechas-btn">Calculadora de congelamientos</button>
+            <button id="calculadora-dias-btn" class="active">Calculadora de Días</button>
+            <button id="calculadora-fechas-btn">Calculadora de Fechas</button>
         </div>
 
         <!-- "Hoy es" -->
@@ -324,7 +330,7 @@
             <div class="center-content">
                 <!-- Calculadora de Días -->
                 <div id="calculadora-dias">
-                    <h2>Calculadora de días a congelar</h2>
+                    <h2>Calculadora de Días</h2>
                     <div class="calculator-inputs">
                         <label for="fecha-inicial">Fecha Inicial:</label><br>
                         <input type="date" id="fecha-inicial"><br>
@@ -345,7 +351,7 @@
                 
                 <!-- Calculadora de Fechas -->
                 <div id="calculadora-fechas" style="display:none;">
-                    <h2>Calculadora de congelamientos</h2>
+                    <h2>Calculadora de Fechas</h2>
                     <div class="calculator-inputs">
                         <label for="fecha1">Fecha 1:</label><br>
                         <input type="date" id="fecha1"><br>
@@ -371,6 +377,10 @@
                         <h3 id="calendar-month-year"></h3>
                         <button id="next-month">&gt;</button>
                     </div>
+                    <!-- Leyenda agregada -->
+                    <p class="calendar-legend">
+                        RECUERDA QUE SOLO PUEDES CONGELAR FECHAS A FUTURO Y ÚNICAMENTE ENTRE 15 Y 90 DÍAS SIN CONTAR DOMINGOS NI DÍAS FESTIVOS
+                    </p>
                     <table id="calendar-table">
                         <!-- El calendario será generado por JavaScript -->
                     </table>
@@ -570,6 +580,18 @@
             let fecha = new Date(fechaInicial);
             let diasSumados = 0;
 
+            // Validar que la fecha inicial sea a futuro
+            if (fecha < today) {
+                alert('La fecha inicial debe ser posterior o igual al día de hoy.');
+                return;
+            }
+
+            // Validar rango de días
+            if (diasASumar < 15 || diasASumar > 90) {
+                alert('El número de días a sumar debe estar entre 15 y 90.');
+                return;
+            }
+
             // Obtener lista de días festivos
             let years = [];
             let currentYear = fecha.getFullYear();
@@ -699,7 +721,14 @@
             let fechaInicioFormateada = new Date(fechaInicio).toLocaleDateString('es-ES', options);
             let fechaFinFormateada = new Date(fechaFin).toLocaleDateString('es-ES', options);
 
-            let textoGenerado = `¡Buen día!\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicioFormateada}\nFecha de término del congelamiento: ${fechaFinFormateada}\nMotivo: ${motivo}`;
+            let textoGenerado = `¡Buen día!
+Por medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.
+Nombre: ${nombre}
+Matrícula: ${matricula}
+Filial: ${filial}
+Fecha de inicio de congelamiento: ${fechaInicioFormateada}
+Fecha de término del congelamiento: ${fechaFinFormateada}
+Motivo: ${motivo}`;
 
             document.getElementById('texto-generado').value = textoGenerado;
         });
