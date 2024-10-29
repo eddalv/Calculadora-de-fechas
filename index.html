@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Calculadora de CONGELAMIENTOS LINGUATEC ®</title>
+    <title>Calculadora de fechas LINGUATEC ®</title>
     <style>
         body {
             margin: 0;
@@ -180,6 +180,11 @@
             color: #0074BC;
             font-size: 20px;
         }
+        .calendar-legend {
+            color: #F6931D;
+            text-align: center;
+            margin-bottom: 10px;
+        }
         .calendar table {
             width: 100%;
             border-collapse: collapse;
@@ -259,8 +264,8 @@
     <main>
         <!-- Botones para seleccionar calculadoras -->
         <div class="calculator-buttons">
-            <button id="calculadora-dias-btn" class="active">Calculadora de Días</button>
-            <button id="calculadora-fechas-btn">Calculadora de Fechas</button>
+            <button id="calculadora-dias-btn" class="active">Calculadora de días a congelar</button>
+            <button id="calculadora-fechas-btn">Calculadora de congelamientos</button>
         </div>
 
         <!-- "Hoy es" -->
@@ -279,7 +284,7 @@
                         <div class="calculator-inputs">
                             <label for="fecha-inicial">Fecha Inicial:</label><br>
                             <input type="date" id="fecha-inicial"><br>
-                            <label for="dias-a-sumar">Número de días a sumar (15 a 90):</label><br>
+                            <label for="dias-a-sumar">Número de días a congelar (15 a 90):</label><br>
                             <input type="number" id="dias-a-sumar" min="15" max="90"><br>
                         </div>
                         <div style="text-align: center;">
@@ -291,13 +296,13 @@
                             <h3>Fecha Resultado:</h3>
                             <p id="resultado-dias"></p>
                             <!-- Botón para solicitar congelamiento -->
-                            <button id="solicitar-congelamiento-btn" style="display:none;">SOLICITAR CONGELAMIENTO</button>
+                            <button id="solicitar-congelamiento-btn" style="display:none;">Solicitar congelamiento</button>
                         </div>
                     </div>
                     
                     <!-- Calculadora de Fechas -->
                     <div id="calculadora-fechas" style="display:none;">
-                        <h2>Calculadora de Fechas</h2>
+                        <h2>Calculadora de congelamientos</h2>
                         <div class="calculator-inputs">
                             <label for="fecha1">Fecha 1:</label><br>
                             <input type="date" id="fecha1"><br>
@@ -351,6 +356,7 @@
                             <h3 id="calendar-month-year"></h3>
                             <button id="next-month">&gt;</button>
                         </div>
+                        <p class="calendar-legend">RECUERDA QUE SOLO PUEDES CONGELAR FECHAS FUTURAS SIN CONTAR DOMINGOS NI DÍAS FESTIVOS</p>
                         <table id="calendar-table">
                             <!-- El calendario será generado por JavaScript -->
                         </table>
@@ -555,7 +561,13 @@
             let fechaInicio = document.getElementById('fecha-inicial').value;
             let fechaTermino = document.getElementById('resultado-dias').innerText;
 
-            document.getElementById('fecha-inicio-congelamiento').value = fechaInicio;
+            // Formatear fecha de inicio
+            let fechaInicioObj = new Date(fechaInicio);
+            let options = { day: 'numeric', month: 'long', year: 'numeric' };
+            let fechaInicioFormateada = fechaInicioObj.toLocaleDateString('es-ES', options);
+
+            // Guardar fechas en campos ocultos (si es necesario)
+            document.getElementById('fecha-inicio-congelamiento').value = fechaInicioFormateada;
             document.getElementById('fecha-termino-congelamiento').value = fechaTermino;
         });
 
@@ -566,13 +578,8 @@
             let filial = document.getElementById('filial').value;
             let motivo = document.getElementById('motivo').value;
 
-            let fechaInicio = document.getElementById('fecha-inicial').value;
-            let fechaTermino = document.getElementById('resultado-dias').innerText;
-
-            // Formatear fecha de inicio
-            let fechaInicioObj = new Date(fechaInicio);
-            let options = { day: 'numeric', month: 'long', year: 'numeric' };
-            let fechaInicioFormateada = fechaInicioObj.toLocaleDateString('es-ES', options);
+            let fechaInicioFormateada = document.getElementById('fecha-inicio-congelamiento').value;
+            let fechaTermino = document.getElementById('fecha-termino-congelamiento').value;
 
             // Crear texto
             let texto = `¡Buen día!\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicioFormateada}\nFecha de término del congelamiento: ${fechaTermino}\nMotivo: ${motivo}`;
