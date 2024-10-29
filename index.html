@@ -96,7 +96,7 @@
             border-radius: 15px;
         }
         /* Estilos de las calculadoras */
-        #calculadora-dias, #calculadora-fechas, .calendar, #formulario-congelamiento {
+        #calculadora-dias, #calculadora-fechas, .calendar {
             background-color: white;
             padding: 20px;
             margin-top: 20px;
@@ -106,6 +106,61 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+        /* Estilos del formulario de congelamiento */
+        #solicitud-congelamiento {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-container {
+            width: 60%;
+        }
+        .form-container label {
+            font-size: 16px;
+            color: #333;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+        .form-container button {
+            background-color: #0074BC;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+        .form-container button:hover {
+            background-color: #005b9a;
+        }
+        .legend-container {
+            width: 35%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .legend-container p {
+            font-size: 16px;
+            color: #333;
+        }
+        .legend-container b {
+            font-weight: bold;
         }
         /* Footer */
         footer {
@@ -117,13 +172,11 @@
             color: #333;
         }
         /* Ajustes en los campos de entrada */
-        .calculator-inputs, .congelamiento-inputs {
+        .calculator-inputs {
             text-align: center;
         }
         .calculator-inputs input[type="date"],
-        .calculator-inputs input[type="number"],
-        .congelamiento-inputs input[type="text"],
-        .congelamiento-inputs textarea {
+        .calculator-inputs input[type="number"] {
             width: 80%;
             max-width: 200px;
             padding: 12px;
@@ -160,7 +213,6 @@
         }
         h3 {
             color: #333;
-            text-align: center;
         }
         /* Estilos para el calendario */
         .calendar-header {
@@ -220,19 +272,15 @@
             .right-side {
                 margin-top: 20px;
             }
-        }
-        /* Estilos para el formulario de congelamiento */
-        #texto-copiable {
-            width: 90%;
-            height: 200px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 15px;
-            font-size: 16px;
-            background-color: #f9f9f9;
-            resize: none;
-            margin: 0 auto 15px auto;
-            display: block;
+            #solicitud-congelamiento {
+                flex-direction: column;
+            }
+            .legend-container, .form-container {
+                width: 100%;
+            }
+            .legend-container {
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -266,8 +314,8 @@
             <p id="hoy-es"></p>
         </div>
 
-        <div class="main-container">
-            <!-- Centro: Calculadoras y Formulario -->
+        <div class="main-container" id="main-content">
+            <!-- Centro: Calculadoras -->
             <div class="center-content">
                 <!-- Calculadora de Días -->
                 <div id="calculadora-dias">
@@ -286,35 +334,10 @@
                     <div>
                         <h3>Fecha Resultado:</h3>
                         <p id="resultado-dias"></p>
-                        <button id="solicitar-congelamiento-btn" style="display: none;">Solicitar congelamiento</button>
+                        <button id="solicitar-congelamiento-btn" style="display:none;">Solicitar congelamiento</button>
                     </div>
                 </div>
                 
-                <!-- Formulario de Congelamiento -->
-                <div id="formulario-congelamiento" style="display: none;">
-                    <h2>Solicitud de Congelamiento</h2>
-                    <div class="congelamiento-inputs">
-                        <label for="nombre">Nombre:</label><br>
-                        <input type="text" id="nombre"><br>
-                        <label for="matricula">Matrícula:</label><br>
-                        <input type="text" id="matricula"><br>
-                        <label for="filial">Filial:</label><br>
-                        <input type="text" id="filial"><br>
-                        <label for="fecha-inicio-congelamiento">Fecha de inicio de congelamiento:</label><br>
-                        <input type="text" id="fecha-inicio-congelamiento" readonly><br>
-                        <label for="fecha-fin-congelamiento">Fecha de término de congelamiento:</label><br>
-                        <input type="text" id="fecha-fin-congelamiento" readonly><br>
-                        <label for="motivo">Motivo de congelamiento:</label><br>
-                        <textarea id="motivo" rows="4"></textarea><br>
-                    </div>
-                    <button id="generar-texto-btn">Generar</button>
-                    <div id="texto-generado" style="display: none;">
-                        <h3>Texto Generado:</h3>
-                        <textarea id="texto-copiable" readonly></textarea><br>
-                        <button id="copiar-texto-btn">Copiar</button>
-                    </div>
-                </div>
-
                 <!-- Calculadora de Fechas -->
                 <div id="calculadora-fechas" style="display:none;">
                     <h2>Calculadora de Fechas</h2>
@@ -349,6 +372,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Formulario de Solicitud de Congelamiento -->
+        <div id="solicitud-congelamiento" style="display:none;">
+            <!-- Leyenda -->
+            <div class="legend-container">
+                <p><b>RECUERDA QUE SOLO PUEDES CONGELAR FECHAS POSTERIORES AL DÍA PRESENTE.</b> Copia el texto generado y envíalo al correo <b>atencionacademica.cg@linguatec.com.mx</b> con el asunto <b>SOLICITUD DE CONGELAMIENTO (TU NOMBRE Y MATRÍCULA)</b></p>
+            </div>
+            <!-- Formulario -->
+            <div class="form-container">
+                <h2>Solicitud de Congelamiento</h2>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre">
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula">
+                <label for="filial">Filial:</label>
+                <input type="text" id="filial">
+                <label for="motivo">Motivo de congelamiento:</label>
+                <textarea id="motivo" rows="4"></textarea>
+                <button id="generar-texto-btn">Generar</button>
+                <button id="copiar-texto-btn" style="display:none;">Copiar texto</button>
+                <button id="volver-btn">Volver</button>
+                <div id="texto-generado" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
     </main>
     
     <!-- Footer -->
@@ -446,27 +494,28 @@
 
         // Mostrar/ocultar calculadoras y resaltar botón activo
         function showCalculator(calculator) {
-            document.getElementById('formulario-congelamiento').style.display = 'none';
             if (calculator === 'dias') {
                 document.getElementById('calculadora-dias').style.display = 'block';
                 document.getElementById('calculadora-fechas').style.display = 'none';
                 document.getElementById('calculadora-dias-btn').classList.add('active');
                 document.getElementById('calculadora-fechas-btn').classList.remove('active');
-                document.querySelector('.right-side').style.display = 'flex';
             } else {
                 document.getElementById('calculadora-dias').style.display = 'none';
                 document.getElementById('calculadora-fechas').style.display = 'block';
                 document.getElementById('calculadora-dias-btn').classList.remove('active');
                 document.getElementById('calculadora-fechas-btn').classList.add('active');
-                document.querySelector('.right-side').style.display = 'flex';
             }
         }
 
         document.getElementById('calculadora-dias-btn').addEventListener('click', function() {
+            document.getElementById('solicitud-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
             showCalculator('dias');
         });
 
         document.getElementById('calculadora-fechas-btn').addEventListener('click', function() {
+            document.getElementById('solicitud-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
             showCalculator('fechas');
         });
 
@@ -481,9 +530,8 @@
             return holidays;
         }
 
-        // Variables para almacenar fechas
-        let fechaInicialCalculada = '';
-        let fechaFinalCalculada = '';
+        let fechaInicialGlobal = '';
+        let fechaResultadoGlobal = '';
 
         // Calculadora de Días
         document.getElementById('calcular-dias-btn').addEventListener('click', async function() {
@@ -497,8 +545,10 @@
             }
 
             let fecha = new Date(fechaInicial);
-            fechaInicialCalculada = formatDate(fecha);
             let diasSumados = 0;
+
+            // Guardar la fecha inicial globalmente
+            fechaInicialGlobal = fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
             // Obtener lista de días festivos
             let years = [];
@@ -534,54 +584,58 @@
             // Formatear la fecha resultado
             let options = { day: 'numeric', month: 'long', year: 'numeric' };
             let fechaResultado = fecha.toLocaleDateString('es-ES', options);
-            fechaFinalCalculada = fechaResultado;
+
+            // Guardar la fecha resultado globalmente
+            fechaResultadoGlobal = fechaResultado;
 
             document.getElementById('resultado-dias').innerText = fechaResultado;
             document.getElementById('solicitar-congelamiento-btn').style.display = 'inline-block';
         });
 
-        // Botón "Solicitar congelamiento"
+        // Evento para "Solicitar congelamiento"
         document.getElementById('solicitar-congelamiento-btn').addEventListener('click', function() {
-            // Ocultar calculadora y calendario
-            document.getElementById('calculadora-dias').style.display = 'none';
-            document.querySelector('.right-side').style.display = 'none';
-
-            // Mostrar formulario
-            document.getElementById('formulario-congelamiento').style.display = 'flex';
-
-            // Rellenar fechas
-            document.getElementById('fecha-inicio-congelamiento').value = fechaInicialCalculada;
-            document.getElementById('fecha-fin-congelamiento').value = fechaFinalCalculada;
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('solicitud-congelamiento').style.display = 'flex';
+            // Llenar fechas automáticamente
+            document.getElementById('fecha-inicio-congelamiento').value = fechaInicialGlobal;
+            document.getElementById('fecha-fin-congelamiento').value = fechaResultadoGlobal;
         });
 
-        // Botón "Generar"
+        // Botón "Generar" en el formulario
         document.getElementById('generar-texto-btn').addEventListener('click', function() {
-            let nombre = document.getElementById('nombre').value.trim();
-            let matricula = document.getElementById('matricula').value.trim();
-            let filial = document.getElementById('filial').value.trim();
-            let fechaInicio = document.getElementById('fecha-inicio-congelamiento').value;
-            let fechaFin = document.getElementById('fecha-fin-congelamiento').value;
-            let motivo = document.getElementById('motivo').value.trim();
+            let nombre = document.getElementById('nombre').value;
+            let matricula = document.getElementById('matricula').value;
+            let filial = document.getElementById('filial').value;
+            let motivo = document.getElementById('motivo').value;
 
             if (!nombre || !matricula || !filial || !motivo) {
                 alert('Por favor complete todos los campos.');
                 return;
             }
 
-            let textoGenerado = `¡Buen día!\n\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\n\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicio}\nFecha de término del congelamiento: ${fechaFin}\nMotivo: ${motivo}`;
+            let texto = `¡Buen día!\nPor medio de la presente solicito se congele mi cuenta durante el periodo que indico a continuación.\nNombre: ${nombre}\nMatrícula: ${matricula}\nFilial: ${filial}\nFecha de inicio de congelamiento: ${fechaInicialGlobal}\nFecha de término del congelamiento: ${fechaResultadoGlobal}\nMotivo: ${motivo}`;
 
-            document.getElementById('texto-copiable').value = textoGenerado;
-            document.getElementById('texto-generado').style.display = 'block';
+            let textoGeneradoDiv = document.getElementById('texto-generado');
+            textoGeneradoDiv.innerHTML = `<textarea id="texto-copiar" rows="10" style="width:100%; padding:10px; border-radius:10px;">${texto}</textarea>`;
+            document.getElementById('copiar-texto-btn').style.display = 'inline-block';
         });
 
-        // Botón "Copiar"
+        // Botón "Copiar texto"
         document.getElementById('copiar-texto-btn').addEventListener('click', function() {
-            let texto = document.getElementById('texto-copiable');
+            let texto = document.getElementById('texto-copiar');
             texto.select();
-            texto.setSelectionRange(0, 99999); // Para dispositivos móviles
+            texto.setSelectionRange(0, 99999); // Para móviles
             document.execCommand('copy');
             alert('Texto copiado al portapapeles.');
         });
+
+        // Botón "Volver"
+        document.getElementById('volver-btn').addEventListener('click', function() {
+            document.getElementById('solicitud-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            showCalculator('dias');
+        });
+
     </script>
 </body>
 </html>
