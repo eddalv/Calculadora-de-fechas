@@ -20,6 +20,7 @@
             padding: 0 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             z-index: 1000;
+            justify-content: center; /* Centrar los elementos dentro del header */
         }
         header {
             top: 0;
@@ -40,7 +41,7 @@
         .calculator-buttons button {
             background-color: #E0E0E0;
             color: #0074BC;
-            padding: 10px;
+            padding: 10px 20px;
             margin: 5px;
             border: none;
             border-radius: 15px;
@@ -70,20 +71,19 @@
             display: flex;
             flex-direction: column;
         }
-        #logo {
-            flex: 1;
-        }
         #logo img {
             height: 40px;
         }
         header h1 {
-            flex: 2;
+            flex: 1; /* Ajuste para centrar el título */
             text-align: center;
             font-size: 22px;
             color: #0074BC;
+            margin: 0; /* Eliminar márgenes predeterminados */
+            cursor: pointer; /* Indicar que es clicable */
         }
         #aalex-button {
-            flex: 1;
+            flex: 0 0 auto; /* Evitar que ocupe espacio adicional */
             text-align: right;
         }
         #aalex-button a {
@@ -92,6 +92,7 @@
             padding: 10px 15px;
             text-decoration: none;
             border-radius: 15px;
+            font-size: 16px;
         }
         /* Estilos de las calculadoras */
         #calculadora-dias, #calculadora-fechas, .calendar {
@@ -114,6 +115,20 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             display: none;
             flex-direction: column;
+            position: relative; /* Para posicionar la flecha de regreso */
+        }
+        /* Flecha de regreso */
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #0074BC;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .back-arrow:hover {
+            color: #005b9a;
         }
         /* Leyenda lateral en el formulario */
         .left-legend {
@@ -125,9 +140,11 @@
         }
         .left-legend b {
             font-weight: bold;
+            color: #0074BC; /* Azul de los botones */
         }
         .form-container {
             display: flex;
+            gap: 20px; /* Añadido para separar la leyenda de los campos */
         }
         .form-fields {
             width: 70%;
@@ -241,7 +258,8 @@
         .calendar-legend {
             text-align: center;
             font-size: 14px;
-            color: #333;
+            color: #F6931D; /* Color naranja del botón Aalex */
+            font-weight: bold; /* Negritas */
             margin-bottom: 10px;
         }
         .calendar table {
@@ -285,6 +303,7 @@
             }
             .form-container {
                 flex-direction: column;
+                gap: 10px; /* Ajuste para dispositivos móviles */
             }
             .left-legend, .form-fields {
                 width: 100%;
@@ -292,6 +311,56 @@
             .left-legend {
                 margin-bottom: 20px;
             }
+        }
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            text-align: center;
+        }
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+        .close-modal:hover,
+        .close-modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Estilos para los radio buttons en horizontal */
+        .radio-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .radio-group label {
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -305,7 +374,7 @@
             </a>
         </div>
         <!-- Centro: Título -->
-        <h1>Calculadora de fechas LINGUATEC ®</h1>
+        <h1 id="header-title">Calculadora de fechas LINGUATEC ®</h1>
         <!-- Derecha: Botón Aalex -->
         <div id="aalex-button">
             <a href="https://linguatec.schoolibox.com/">Aalex</a>
@@ -390,11 +459,13 @@
 
         <!-- Formulario de congelamiento -->
         <div id="formulario-congelamiento">
+            <!-- Flecha de regreso -->
+            <div class="back-arrow" id="back-arrow">&#8592;</div>
             <h2>Solicitud de congelamiento</h2>
             <div class="form-container">
                 <div class="left-legend">
                     <p>
-                        <b>RECUERDA QUE SOLO PUEDES CONGELAR FECHAS POSTERIORES AL DÍA PRESENTE.</b> Copia el texto generado y envíalo al correo <b>atencionacademica.cg@linguatec.com.mx</b> con el asunto <b>SOLICITUD DE CONGELAMIENTO (TU NOMBRE Y MATRÍCULA)</b>
+                        <b>RECUERDA QUE SOLO PUEDES CONGELAR FECHAS POSTERIORES AL DÍA PRESENTE.</b> Copia el texto generado y envíalo al correo <b>atencionacademica.cg@linguatec.com.mx</b>, con copia a <b>alberto.martinez@linguatec.com.mx</b> y <b>recepcion.sjr@linguatec.com.mx</b>, y utiliza el asunto <b>SOLICITUD DE CONGELAMIENTO (TU NOMBRE Y MATRÍCULA)</b>
                     </p>
                 </div>
                 <div class="form-fields">
@@ -408,13 +479,33 @@
                     <input type="text" id="filial">
 
                     <label for="fecha-inicio">Fecha de inicio de congelamiento:</label>
-                    <input type="date" id="fecha-inicio">
+                    <input type="date" id="fecha-inicio" readonly>
 
                     <label for="fecha-fin">Fecha de término de congelamiento:</label>
-                    <input type="date" id="fecha-fin">
+                    <input type="date" id="fecha-fin" readonly>
 
                     <label for="motivo">Motivo de congelamiento:</label>
                     <textarea id="motivo"></textarea>
+
+                    <label for="cliente-correo">Selecciona tu cliente de correo:</label><br>
+                    <div class="radio-group">
+                        <div>
+                            <input type="radio" id="gmail" name="cliente-correo" value="gmail">
+                            <label for="gmail">Gmail</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="outlook" name="cliente-correo" value="outlook">
+                            <label for="outlook">Outlook</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="otro" name="cliente-correo" value="otro">
+                            <label for="otro">Otro</label>
+                        </div>
+                    </div>
+                    <div id="otro-correo-container" style="display: none; margin-top: 10px;">
+                        <label for="otro-correo">Introduce tu cliente de correo:</label><br>
+                        <input type="text" id="otro-correo" placeholder="Ejemplo: Yahoo, ProtonMail, etc.">
+                    </div>
                 </div>
             </div>
             <div class="form-buttons">
@@ -429,6 +520,14 @@
             </div>
         </div>
     </main>
+    
+    <!-- Modal para Pop-ups -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <p id="modal-message"></p>
+        </div>
+    </div>
     
     <!-- Footer -->
     <footer>
@@ -538,16 +637,44 @@
             }
         }
 
-        document.getElementById('calculadora-dias-btn').addEventListener('click', function() {
-            showCalculator('dias');
+        // Reset forms when switching calculators
+        function resetForms() {
+            // Reset Calculadora de Días
+            document.getElementById('fecha-inicial').value = '';
+            document.getElementById('dias-a-sumar').value = '';
+            document.getElementById('excluir-dias').checked = true;
+            document.getElementById('resultado-dias').innerText = '';
+            document.getElementById('solicitar-congelamiento-btn').style.display = 'none';
+
+            // Reset Calculadora de Fechas
+            document.getElementById('fecha1').value = '';
+            document.getElementById('fecha2').value = '';
+            document.getElementById('excluir-dias-fechas').checked = true;
+            document.getElementById('resultado-fechas').innerText = '';
+
+            // Reset Solicitud de Congelamiento
             document.getElementById('formulario-congelamiento').style.display = 'none';
             document.getElementById('main-content').style.display = 'flex';
+            document.getElementById('nombre').value = '';
+            document.getElementById('matricula').value = '';
+            document.getElementById('filial').value = '';
+            document.getElementById('fecha-inicio').value = '';
+            document.getElementById('fecha-fin').value = '';
+            document.getElementById('motivo').value = '';
+            document.querySelectorAll('input[name="cliente-correo"]').forEach(radio => radio.checked = false);
+            document.getElementById('otro-correo').value = '';
+            document.getElementById('otro-correo-container').style.display = 'none';
+            document.getElementById('texto-generado').value = '';
+        }
+
+        document.getElementById('calculadora-dias-btn').addEventListener('click', function() {
+            showCalculator('dias');
+            resetForms();
         });
 
         document.getElementById('calculadora-fechas-btn').addEventListener('click', function() {
             showCalculator('fechas');
-            document.getElementById('formulario-congelamiento').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
+            resetForms();
         });
 
         // Mostrar la calculadora de días por defecto
@@ -557,6 +684,9 @@
         async function fetchHolidays(year) {
             try {
                 let response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/MX`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los días festivos');
+                }
                 let data = await response.json();
                 let holidays = data.map(holiday => holiday.date);
                 return holidays;
@@ -573,7 +703,7 @@
             let excluirDias = document.getElementById('excluir-dias').checked;
 
             if (!fechaInicial || !diasASumar) {
-                alert('Por favor ingrese la fecha inicial y el número de días a sumar.');
+                showModal('Por favor ingrese la fecha inicial y el número de días a sumar.');
                 return;
             }
 
@@ -581,14 +711,16 @@
             let diasSumados = 0;
 
             // Validar que la fecha inicial sea a futuro
-            if (fecha < today) {
-                alert('La fecha inicial debe ser posterior o igual al día de hoy.');
+            let todayDate = new Date();
+            todayDate.setHours(0,0,0,0); // Ignorar tiempo
+            if (fecha < todayDate) {
+                showModal('La fecha inicial debe ser posterior o igual al día de hoy.');
                 return;
             }
 
             // Validar rango de días
             if (diasASumar < 15 || diasASumar > 90) {
-                alert('El número de días a sumar debe estar entre 15 y 90.');
+                showModal('El número de días a sumar debe estar entre 15 y 90.');
                 return;
             }
 
@@ -642,15 +774,23 @@
             let excluirDias = document.getElementById('excluir-dias-fechas').checked;
 
             if (!fecha1 || !fecha2) {
-                alert('Por favor ingrese ambas fechas.');
+                showModal('Por favor ingrese ambas fechas.');
                 return;
             }
 
             let startDate = new Date(fecha1);
             let endDate = new Date(fecha2);
 
+            // Validar que ambas fechas sean a futuro
+            let todayDate = new Date();
+            todayDate.setHours(0,0,0,0); // Ignorar tiempo
+            if (startDate < todayDate || endDate < todayDate) {
+                showModal('Ambas fechas deben ser posteriores o iguales al día de hoy.');
+                return;
+            }
+
             if (endDate < startDate) {
-                alert('La Fecha 2 debe ser posterior o igual a la Fecha 1.');
+                showModal('La Fecha 2 debe ser posterior o igual a la Fecha 1.');
                 return;
             }
 
@@ -702,7 +842,45 @@
             document.getElementById('fecha-fin').value = window.fechaFinCongelamiento;
         });
 
-        // Generar texto
+        // Flecha de regreso
+        document.getElementById('back-arrow').addEventListener('click', function() {
+            document.getElementById('formulario-congelamiento').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            resetForms();
+        });
+
+        // Mostrar u ocultar campo "Otro" en cliente de correo
+        document.getElementsByName('cliente-correo').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                if (this.value === 'otro') {
+                    document.getElementById('otro-correo-container').style.display = 'block';
+                } else {
+                    document.getElementById('otro-correo-container').style.display = 'none';
+                }
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('custom-modal');
+        const modalMessage = document.getElementById('modal-message');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        function showModal(message) {
+            modalMessage.innerText = message;
+            modal.style.display = 'block';
+        }
+
+        closeModalBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Generar texto y manejar opciones de correo
         document.getElementById('generar-texto-btn').addEventListener('click', function() {
             let nombre = document.getElementById('nombre').value.trim();
             let matricula = document.getElementById('matricula').value.trim();
@@ -710,9 +888,16 @@
             let fechaInicio = document.getElementById('fecha-inicio').value;
             let fechaFin = document.getElementById('fecha-fin').value;
             let motivo = document.getElementById('motivo').value.trim();
+            let clienteCorreo = document.querySelector('input[name="cliente-correo"]:checked');
+            let otroCorreo = document.getElementById('otro-correo').value.trim();
 
-            if (!nombre || !matricula || !filial || !fechaInicio || !fechaFin || !motivo) {
-                alert('Por favor complete todos los campos.');
+            if (!nombre || !matricula || !filial || !fechaInicio || !fechaFin || !motivo || !clienteCorreo) {
+                showModal('Por favor complete todos los campos y seleccione un cliente de correo.');
+                return;
+            }
+
+            if (clienteCorreo.value === 'otro' && !otroCorreo) {
+                showModal('Por favor especifique tu cliente de correo.');
                 return;
             }
 
@@ -731,6 +916,24 @@ Fecha de término del congelamiento: ${fechaFinFormateada}
 Motivo: ${motivo}`;
 
             document.getElementById('texto-generado').value = textoGenerado;
+
+            if (clienteCorreo.value === 'gmail' || clienteCorreo.value === 'outlook') {
+                let mailtoLink = '';
+                let asunto = encodeURIComponent(`SOLICITUD DE CONGELAMIENTO (${nombre} y ${matricula})`);
+                let cuerpo = encodeURIComponent(textoGenerado);
+                let destinatario = 'atencionacademica.cg@linguatec.com.mx';
+                let cc = 'alberto.martinez@linguatec.com.mx,recepcion.sjr@linguatec.com.mx';
+
+                if (clienteCorreo.value === 'gmail') {
+                    mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(destinatario)}&cc=${encodeURIComponent(cc)}&su=${asunto}&body=${cuerpo}`;
+                } else if (clienteCorreo.value === 'outlook') {
+                    mailtoLink = `https://outlook.live.com/owa/?path=/mail/action/compose&to=${encodeURIComponent(destinatario)}&cc=${encodeURIComponent(cc)}&subject=${asunto}&body=${cuerpo}`;
+                }
+
+                window.open(mailtoLink, '_blank');
+            } else if (clienteCorreo.value === 'otro') {
+                showModal('Por favor copia el texto generado y pégalo en tu cliente de correo preferido.');
+            }
         });
 
         // Copiar texto
@@ -741,10 +944,15 @@ Motivo: ${motivo}`;
 
             try {
                 document.execCommand('copy');
-                alert('Texto copiado al portapapeles.');
+                showModal('Texto copiado al portapapeles.');
             } catch (err) {
-                alert('No se pudo copiar el texto.');
+                showModal('No se pudo copiar el texto.');
             }
+        });
+
+        // Click en el título del header para refrescar la página
+        document.getElementById('header-title').addEventListener('click', function() {
+            location.reload();
         });
     </script>
 </body>
