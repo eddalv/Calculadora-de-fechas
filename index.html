@@ -95,7 +95,7 @@
             font-size: 16px;
         }
         /* Estilos de las calculadoras */
-        #calculadora-dias, #calculadora-fechas, #resta-dias, .calendar {
+        #calculadora-dias, #calculadora-fechas, #nueva-fecha-termino, .calendar {
             background-color: white;
             padding: 20px;
             margin-top: 20px;
@@ -453,7 +453,7 @@
         <div class="calculator-buttons">
             <button id="calculadora-dias-btn" class="active">Calculadora de congelamientos</button>
             <button id="calculadora-fechas-btn">Calculadora de días congelados</button>
-            <button id="resta-dias-btn">Resta días</button>
+            <button id="nueva-fecha-termino-btn">Nueva fecha de término</button>
         </div>
 
         <!-- "Hoy es" -->
@@ -506,25 +506,21 @@
                     </div>
                 </div>
 
-                <!-- Resta Días -->
-                <div id="resta-dias" style="display:none;">
-                    <h2>Resta Días</h2>
+                <!-- Nueva fecha de término -->
+                <div id="nueva-fecha-termino" style="display:none;">
+                    <h2>Nueva fecha de término</h2>
                     <div class="calculator-inputs">
-                        <label for="fecha-resta">Fecha:</label><br>
-                        <input type="date" id="fecha-resta"><br>
-                        <label for="dias-a-restar">Número de días a restar:</label><br>
-                        <input type="number" id="dias-a-restar" min="1"><br>
+                        <label for="fecha-inicio-termino">Fecha inicial de término de curso:</label><br>
+                        <input type="date" id="fecha-inicio-termino"><br>
+                        <label for="dias-a-sumar-termino">Número de días a sumar (15 a 90):</label><br>
+                        <input type="number" id="dias-a-sumar-termino" min="15" max="90"><br>
                     </div>
                     <div style="text-align: center;">
-                        <input type="checkbox" id="excluir-dias-resta" checked>
-                        <label for="excluir-dias-resta">Excluir domingos y días festivos oficiales en México</label><br><br>
-                        <button id="calcular-resta-dias-btn">Calcular</button>
+                        <button id="calcular-termino-btn">Calcular</button>
                     </div>
                     <div>
-                        <h3>Fecha Resultado:</h3>
-                        <p id="resultado-resta-dias"></p>
-                        <!-- Eliminar el botón de solicitar congelamiento -->
-                        <!-- <button id="solicitar-congelamiento-resta-btn" style="display: none;">Solicitar congelamiento</button> -->
+                        <h3>Nueva fecha de término de curso:</h3>
+                        <p id="resultado-termino"></p>
                     </div>
                 </div>
             </div>
@@ -647,6 +643,7 @@
         }
 
         let today = new Date();
+        today.setHours(0,0,0,0); // Establecer a medianoche para comparación
         document.getElementById('hoy-es').innerText = 'Hoy es: ' + formatDate(today);
 
         // Variables para el calendario
@@ -725,11 +722,11 @@
             // Ocultar todas las calculadoras
             document.getElementById('calculadora-dias').style.display = 'none';
             document.getElementById('calculadora-fechas').style.display = 'none';
-            document.getElementById('resta-dias').style.display = 'none';
+            document.getElementById('nueva-fecha-termino').style.display = 'none';
             // Remover clase active de todos los botones
             document.getElementById('calculadora-dias-btn').classList.remove('active');
             document.getElementById('calculadora-fechas-btn').classList.remove('active');
-            document.getElementById('resta-dias-btn').classList.remove('active');
+            document.getElementById('nueva-fecha-termino-btn').classList.remove('active');
             // Mostrar la calculadora seleccionada y activar el botón
             if (calculator === 'dias') {
                 document.getElementById('calculadora-dias').style.display = 'block';
@@ -737,9 +734,9 @@
             } else if (calculator === 'fechas') {
                 document.getElementById('calculadora-fechas').style.display = 'block';
                 document.getElementById('calculadora-fechas-btn').classList.add('active');
-            } else if (calculator === 'resta-dias') {
-                document.getElementById('resta-dias').style.display = 'block';
-                document.getElementById('resta-dias-btn').classList.add('active');
+            } else if (calculator === 'nueva-fecha-termino') {
+                document.getElementById('nueva-fecha-termino').style.display = 'block';
+                document.getElementById('nueva-fecha-termino-btn').classList.add('active');
             }
         }
 
@@ -758,13 +755,10 @@
             document.getElementById('excluir-dias-fechas').checked = true;
             document.getElementById('resultado-fechas').innerText = '';
 
-            // Reset Resta Días
-            document.getElementById('fecha-resta').value = '';
-            document.getElementById('dias-a-restar').value = '';
-            document.getElementById('excluir-dias-resta').checked = true;
-            document.getElementById('resultado-resta-dias').innerText = '';
-            // Se elimina la línea que oculta el botón de congelamiento en Resta Días
-            // document.getElementById('solicitar-congelamiento-resta-btn').style.display = 'none';
+            // Reset Nueva fecha de término
+            document.getElementById('fecha-inicio-termino').value = '';
+            document.getElementById('dias-a-sumar-termino').value = '';
+            document.getElementById('resultado-termino').innerText = '';
 
             // Reset Solicitud de congelamiento
             document.getElementById('formulario-congelamiento').style.display = 'none';
@@ -786,7 +780,7 @@
             showCalculator('dias');
             resetForms();
             // Establecer el min de fecha-inicial al día de hoy
-            let todayISO = new Date().toISOString().split('T')[0];
+            let todayISO = today.toISOString().split('T')[0];
             document.getElementById('fecha-inicial').setAttribute('min', todayISO);
         });
 
@@ -797,18 +791,17 @@
             document.getElementById('fecha-inicial').removeAttribute('min');
         });
 
-        document.getElementById('resta-dias-btn').addEventListener('click', function() {
-            showCalculator('resta-dias');
+        document.getElementById('nueva-fecha-termino-btn').addEventListener('click', function() {
+            showCalculator('nueva-fecha-termino');
             resetForms();
-            // Eliminar el min del fecha-resta si estaba establecido
-            document.getElementById('fecha-resta').removeAttribute('min');
+            // No se establece un min específico para la nueva calculadora
         });
 
         // Mostrar la calculadora de congelamientos por defecto al cargar la página
         window.onload = function() {
             showCalculator('dias');
             // Establecer el min de fecha-inicial al día de hoy
-            let todayISO = new Date().toISOString().split('T')[0];
+            let todayISO = today.toISOString().split('T')[0];
             document.getElementById('fecha-inicial').setAttribute('min', todayISO);
         }
 
@@ -840,13 +833,11 @@
             }
 
             let fecha = new Date(fechaInicial);
-            fecha.setHours(0,0,0,0); // Normalizar a medianoche
+            fecha.setHours(0,0,0,0); // Asegurar que la hora sea 00:00:00
             let diasSumados = 0;
 
             // Validar que la fecha inicial sea a futuro o presente
-            let todayDate = new Date();
-            todayDate.setHours(0,0,0,0); // Ignorar tiempo
-            if (fecha < todayDate) {
+            if (fecha < today) {
                 showModal('La fecha inicial debe ser posterior o igual al día de hoy.');
                 return;
             }
@@ -862,7 +853,6 @@
             let currentYear = fecha.getFullYear();
             let endDate = new Date(fecha);
             endDate.setDate(endDate.getDate() + diasASumar + 100);
-            endDate.setHours(0,0,0,0); // Normalizar a medianoche
             let endYear = endDate.getFullYear();
 
             for (let y = currentYear; y <= endYear; y++) {
@@ -878,11 +868,14 @@
                 }
             }
 
+            // Contar días de forma inclusiva
+            let currentDate = new Date(fecha);
+
             while (diasSumados < diasASumar) {
-                fecha.setDate(fecha.getDate() + 1);
-                fecha.setHours(0,0,0,0); // Normalizar a medianoche
-                let dayOfWeek = fecha.getDay();
-                let formattedDate = fecha.toISOString().split('T')[0];
+                // Incrementar día
+                currentDate.setDate(currentDate.getDate() + 1);
+                let dayOfWeek = currentDate.getDay();
+                let formattedDate = currentDate.toISOString().split('T')[0];
 
                 if (excluirDias && (dayOfWeek === 0 || holidays.includes(formattedDate))) {
                     continue;
@@ -892,14 +885,14 @@
 
             // Formatear la fecha resultado
             let options = { day: 'numeric', month: 'long', year: 'numeric' };
-            let fechaResultado = fecha.toLocaleDateString('es-ES', options);
+            let fechaResultado = currentDate.toLocaleDateString('es-ES', options);
 
             document.getElementById('resultado-dias').innerText = fechaResultado;
             document.getElementById('solicitar-congelamiento-btn').style.display = 'inline-block';
 
             // Guardar fechas para el formulario
             window.fechaInicioCongelamiento = fechaInicial;
-            window.fechaFinCongelamiento = fecha.toISOString().split('T')[0];
+            window.fechaFinCongelamiento = currentDate.toISOString().split('T')[0];
         });
 
         // Calculadora de días congelados
@@ -914,9 +907,9 @@
             }
 
             let startDate = new Date(fecha1);
+            startDate.setHours(0,0,0,0);
             let endDate = new Date(fecha2);
-            startDate.setHours(0,0,0,0); // Normalizar a medianoche
-            endDate.setHours(0,0,0,0);   // Normalizar a medianoche
+            endDate.setHours(0,0,0,0);
 
             // Manejar el orden de las fechas
             if (endDate < startDate) {
@@ -959,73 +952,42 @@
                 }
 
                 currentDate.setDate(currentDate.getDate() + 1);
-                currentDate.setHours(0,0,0,0); // Normalizar a medianoche
             }
 
             document.getElementById('resultado-fechas').innerText = daysCount + ' días';
         });
 
-        // Resta Días
-        document.getElementById('calcular-resta-dias-btn').addEventListener('click', async function() {
-            let fechaResta = document.getElementById('fecha-resta').value;
-            let diasARestar = parseInt(document.getElementById('dias-a-restar').value);
-            let excluirDias = document.getElementById('excluir-dias-resta').checked;
+        // Nueva fecha de término
+        document.getElementById('calcular-termino-btn').addEventListener('click', function() {
+            let fechaInicioTermino = document.getElementById('fecha-inicio-termino').value;
+            let diasASumarTermino = parseInt(document.getElementById('dias-a-sumar-termino').value);
 
-            if (!fechaResta || isNaN(diasARestar)) {
-                showModal('Por favor ingrese la fecha y el número de días a restar.');
+            if (!fechaInicioTermino || isNaN(diasASumarTermino)) {
+                showModal('Por favor ingrese la fecha inicial de término y el número de días a sumar.');
                 return;
             }
 
-            let fecha = new Date(fechaResta);
-            fecha.setHours(0,0,0,0); // Normalizar a medianoche
-            let diasRestados = 0;
-
-            // No hay restricciones en la fecha para Resta Días (puede ser pasada, presente o futura)
-
-            // Obtener lista de días festivos
-            let years = [];
-            let currentYear = fecha.getFullYear();
-            let startDate = new Date(fecha);
-            startDate.setDate(startDate.getDate() - diasARestar - 100);
-            startDate.setHours(0,0,0,0); // Normalizar a medianoche
-            let startYear = startDate.getFullYear();
-
-            for (let y = startYear; y <= currentYear; y++) {
-                years.push(y);
-            }
-            let holidays = [];
-
-            if (excluirDias) {
-                // Obtener festivos para cada año
-                for (let y of years) {
-                    let h = await fetchHolidays(y);
-                    holidays = holidays.concat(h);
-                }
+            // Validar rango de días
+            if (diasASumarTermino < 15 || diasASumarTermino > 90) {
+                showModal('El número de días a sumar debe ser entre 15 y 90.');
+                return;
             }
 
-            while (diasRestados < diasARestar) {
-                fecha.setDate(fecha.getDate() - 1);
-                fecha.setHours(0,0,0,0); // Normalizar a medianoche
-                let dayOfWeek = fecha.getDay();
-                let formattedDate = fecha.toISOString().split('T')[0];
+            let fecha = new Date(fechaInicioTermino);
+            fecha.setHours(0,0,0,0); // Asegurar que la hora sea 00:00:00
+            let diasSumados = 0;
 
-                if (excluirDias && (dayOfWeek === 0 || holidays.includes(formattedDate))) {
-                    continue;
-                }
-                diasRestados++;
+            // Contar días de forma inclusiva
+            while (diasSumados < diasASumarTermino) {
+                fecha.setDate(fecha.getDate() + 1);
+                diasSumados++;
             }
 
             // Formatear la fecha resultado
             let options = { day: 'numeric', month: 'long', year: 'numeric' };
             let fechaResultado = fecha.toLocaleDateString('es-ES', options);
 
-            document.getElementById('resultado-resta-dias').innerText = fechaResultado;
-            // Eliminar la línea que muestra el botón de congelamiento en Resta Días
-            // document.getElementById('solicitar-congelamiento-resta-btn').style.display = 'inline-block';
-
-            // Se eliminan las variables relacionadas con el congelamiento en Resta Días
-            // window.fechaInicioCongelamientoResta = fecha.toISOString().split('T')[0];
-            // window.fechaFinCongelamientoResta = fechaResta;
+            document.getElementById('resultado-termino').innerText = fechaResultado;
         });
 
         // Mostrar formulario de congelamiento para "Calculadora de congelamientos"
