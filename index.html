@@ -148,11 +148,15 @@
         }
         .form-fields {
             width: 70%;
+            display: flex; /* Añadido para centrar los elementos */
+            flex-direction: column;
+            align-items: center; /* Centrar los elementos horizontalmente */
         }
         .form-fields label {
             display: block;
             margin-bottom: 5px;
             font-size: 16px;
+            text-align: center; /* Centrar las etiquetas */
         }
         .form-fields input, .form-fields textarea {
             width: 100%;
@@ -311,6 +315,10 @@
             .left-legend {
                 margin-bottom: 20px;
             }
+            /* Ajustar el tamaño del texto en dispositivos pequeños */
+            .parenthetical {
+                font-size: 12px;
+            }
         }
         /* Modal Styles */
         .modal {
@@ -361,6 +369,64 @@
         }
         .radio-group label {
             margin-left: 5px;
+        }
+        /* Estilos para el texto en paréntesis */
+        .parenthetical {
+            font-size: 14px;
+            color: #F6931D; /* Naranja */
+        }
+        /* Estilos personalizados para los radio buttons */
+        .radio-group.centered {
+            justify-content: center; /* Centrar los radio buttons */
+        }
+        .custom-radio {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            position: relative;
+        }
+        /* Ocultar el radio button original */
+        .custom-radio input[type="radio"] {
+            display: none;
+        }
+        /* Crear el radio button personalizado */
+        .custom-radio .radio-btn {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px; /* Esquinas redondeadas */
+            margin-right: 8px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        /* Cambiar el color cuando está seleccionado */
+        /* Gmail: Rojo */
+        #gmail:checked + .radio-btn {
+            background-color: red;
+            border-color: red;
+        }
+        /* Outlook: Azul */
+        #outlook:checked + .radio-btn {
+            background-color: blue;
+            border-color: blue;
+        }
+        /* Otro: Gris */
+        #otro:checked + .radio-btn {
+            background-color: gray;
+            border-color: gray;
+        }
+        /* Efecto hover */
+        .custom-radio:hover .radio-btn {
+            border-color: #0074BC;
+        }
+        /* Centrando el radio-selection */
+        .radio-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -420,7 +486,7 @@
                     </div>
                 </div>
                 
-                <!-- Calculadora de Fechas -->
+                <!-- Calculadora de días congelados -->
                 <div id="calculadora-fechas" style="display:none;">
                     <h2>Calculadora de días congelados</h2>
                     <div class="calculator-inputs">
@@ -510,24 +576,32 @@
                     <label for="motivo">Motivo de congelamiento:</label>
                     <textarea id="motivo"></textarea>
 
-                    <label for="cliente-correo">Selecciona tu cliente de correo:</label><br>
-                    <div class="radio-group">
-                        <div>
-                            <input type="radio" id="gmail" name="cliente-correo" value="gmail">
-                            <label for="gmail">Gmail</label>
+                    <!-- Leyenda y Radio Buttons Centrados y Personalizados -->
+                    <div class="radio-selection">
+                        <label for="cliente-correo">
+                            Selecciona tu cliente de correo si deseas hacer un borrador automático <span class="parenthetical">(deberás tener tu sesión de correo iniciada en tu navegador)</span>:
+                        </label><br>
+                        <div class="radio-group centered">
+                            <label class="custom-radio" for="gmail">
+                                <input type="radio" id="gmail" name="cliente-correo" value="gmail">
+                                <span class="radio-btn"></span>
+                                Gmail
+                            </label>
+                            <label class="custom-radio" for="outlook">
+                                <input type="radio" id="outlook" name="cliente-correo" value="outlook">
+                                <span class="radio-btn"></span>
+                                Outlook
+                            </label>
+                            <label class="custom-radio" for="otro">
+                                <input type="radio" id="otro" name="cliente-correo" value="otro">
+                                <span class="radio-btn"></span>
+                                Otro
+                            </label>
                         </div>
-                        <div>
-                            <input type="radio" id="outlook" name="cliente-correo" value="outlook">
-                            <label for="outlook">Outlook</label>
+                        <div id="otro-correo-container" style="display: none; margin-top: 10px;">
+                            <label for="otro-correo">Introduce tu cliente de correo:</label><br>
+                            <input type="text" id="otro-correo" placeholder="Ejemplo: Yahoo, ProtonMail, etc.">
                         </div>
-                        <div>
-                            <input type="radio" id="otro" name="cliente-correo" value="otro">
-                            <label for="otro">Otro</label>
-                        </div>
-                    </div>
-                    <div id="otro-correo-container" style="display: none; margin-top: 10px;">
-                        <label for="otro-correo">Introduce tu cliente de correo:</label><br>
-                        <input type="text" id="otro-correo" placeholder="Ejemplo: Yahoo, ProtonMail, etc.">
                     </div>
                 </div>
             </div>
@@ -670,14 +744,14 @@
 
         // Reset forms when switching calculators
         function resetForms() {
-            // Reset Calculadora de Días
+            // Reset Calculadora de congelamientos
             document.getElementById('fecha-inicial').value = '';
             document.getElementById('dias-a-sumar').value = '';
             document.getElementById('excluir-dias').checked = true;
             document.getElementById('resultado-dias').innerText = '';
             document.getElementById('solicitar-congelamiento-btn').style.display = 'none';
 
-            // Reset Calculadora de Fechas
+            // Reset Calculadora de días congelados
             document.getElementById('fecha1').value = '';
             document.getElementById('fecha2').value = '';
             document.getElementById('excluir-dias-fechas').checked = true;
@@ -690,7 +764,7 @@
             document.getElementById('resultado-resta-dias').innerText = '';
             document.getElementById('solicitar-congelamiento-resta-btn').style.display = 'none';
 
-            // Reset Solicitud de Congelamiento
+            // Reset Solicitud de congelamiento
             document.getElementById('formulario-congelamiento').style.display = 'none';
             document.getElementById('main-content').style.display = 'flex';
             document.getElementById('nombre').value = '';
@@ -728,7 +802,7 @@
             document.getElementById('fecha-resta').removeAttribute('min');
         });
 
-        // Mostrar la calculadora de días por defecto al cargar la página
+        // Mostrar la calculadora de congelamientos por defecto al cargar la página
         window.onload = function() {
             showCalculator('dias');
             // Establecer el min de fecha-inicial al día de hoy
@@ -752,7 +826,7 @@
             }
         }
 
-        // Calculadora de Días
+        // Calculadora de congelamientos
         document.getElementById('calcular-dias-btn').addEventListener('click', async function() {
             let fechaInicial = document.getElementById('fecha-inicial').value;
             let diasASumar = parseInt(document.getElementById('dias-a-sumar').value);
@@ -776,7 +850,7 @@
 
             // Validar rango de días
             if (diasASumar < 15 || diasASumar > 90) {
-                showModal('El número de días a congelar debe estar entre 15 y 90.');
+                showModal('El número de días a congelar debe ser entre 15 y 90.');
                 return;
             }
 
@@ -823,7 +897,7 @@
             window.fechaFinCongelamiento = fecha.toISOString().split('T')[0];
         });
 
-        // Calculadora de Fechas
+        // Calculadora de días congelados
         document.getElementById('calcular-fechas-btn').addEventListener('click', async function() {
             let fecha1 = document.getElementById('fecha1').value;
             let fecha2 = document.getElementById('fecha2').value;
@@ -941,7 +1015,7 @@
             window.fechaFinCongelamientoResta = fechaResta;
         });
 
-        // Mostrar formulario de congelamiento para "Calculadora de Días"
+        // Mostrar formulario de congelamiento para "Calculadora de congelamientos"
         document.getElementById('solicitar-congelamiento-btn').addEventListener('click', function() {
             document.getElementById('main-content').style.display = 'none';
             document.getElementById('formulario-congelamiento').style.display = 'block';
@@ -1033,7 +1107,7 @@ Nombre: ${nombre}
 Matrícula: ${matricula}
 Filial: ${filial}
 Fecha de inicio de congelamiento: ${fechaInicioFormateada}
-Fecha de término del congelamiento: ${fechaFinFormateada}
+Fecha de término de congelamiento: ${fechaFinFormateada}
 Motivo: ${motivo}`;
 
             document.getElementById('texto-generado').value = textoGenerado;
