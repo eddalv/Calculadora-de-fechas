@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora de fechas LINGUATEC ®</title>
+    <!-- Agregar el Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0idXVpZC1iNjk0YWU0OC1mNDMwLTQzOGYtYjI3Mi1mMmE5ZTRhMDMzNDkiIGRhdGEtbmFtZT0iTGF5ZXIgMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTMuMTggMTIuOTIiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAudXVpZC00ZTU2MTViNy0zZDU4LTQ2NDgtYjQ5Yy1hYzdhMjRlNDA4YzMgewogICAgICAgIGZpbGw6ICMxMzdiYWY7CiAgICAgIH0KCiAgICAgIC51dWlkLTRlNTYxNWI3LTNkNTgtNDY0OC1iNDljLWFjN2EyNGU0MDhjMywgLnV1aWQtMDliMmE2MDUtOGIyYS00YTc1LThkZmMtYTY1NGYxZjgxNzJjLCAudXVpZC02NDcxZDA4ZS0zMzQ3LTQzMzItOTE0Mi1hYTE0NTM4Njk1ZTAgewogICAgICAgIHN0cm9rZS13aWR0aDogMHB4OwogICAgICB9CgogICAgICAudXVpZC0wOWIyYTYwNS04YjJhLTRhNzUtOGRmYy1hNjU0ZjFmODE3MmMgewogICAgICAgIGZpbGw6ICNmNzk1MzI7CiAgICAgIH0KCiAgICAgIC51dWlkLTY0NzFkMDhlLTMzNDctNDMzMi05MTQyLWFhMTQ1Mzg2OTVlMCB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPGcgaWQ9InV1aWQtYmZiOTg5OTMtMWQwYy00NDM1LWJjOTQtM2Q1YzY1NzllMTkxIiBkYXRhLW5hbWU9IkxheWVyIDEiPgogICAgPHBvbHlnb24gY2xhc3M9InV1aWQtNGU1NjE1YjctM2Q1OC00NjQ4LWI0OWMtYWM3YTI0ZTQwOGMzIiBwb2ludHM9IjEuMyAyLjQ2IDIuMDIgMS44NCAxMS4zNCAuOTQgMTIuMTggMS4zNiAxMS40IDguOTcgMTAuNTkgOS43MiAxLjQ2IDkuMzUgLjY3IDguNzUgMS4zIDIuNDYiLz4KICAgIDxnPgogICAgICA8Zz4KICAgICAgICA8cmVjdCBjbGFzcz0idXVpZC02NDcxZDA4ZS0zMzQ3LTQzMzItOTE0Mi1hYTE0NTM4Njk1ZTAiIHg9IjcuMTYiIHk9IjYuNzUiIHdpZHRoPSIyLjcyIiBoZWlnaHQ9Ii41NCIvPgogICAgICAgIDxyZWN0IGNsYXNzPSJ1dWlkLTY0NzFkMDhlLTMzNDctNDMzMi05MTQyLWFhMTQ1Mzg2OTVlMCIgeD0iNy4xNiIgeT0iNy44NSIgd2lkdGg9IjIuNzIiIGhlaWdodD0iLjU0Ii8+CiAgICAgIDwvZz4KICAgICAgPHBvbHlnb24gY2xhc3M9InV1aWQtNjQ3MWQwOGUtMzM0Ny00MzMyLTkxNDItYWExNDUzODY5NWUwIiBwb2ludHM9IjMuMyA3LjMgNC4zOCA3LjMgNC4zOCA2LjIxIDQuOTMgNi4yMSA0LjkzIDcuMyA2LjAxIDcuMyA2LjAxIDcuODUgNC45MyA3Ljg1IDQuOTMgOC45MyA0LjM4IDguOTMgNC4zOCA3Ljg1IDMuMyA3Ljg1IDMuMyA3LjMiLz4KICAgICAgPHBvbHlnb24gY2xhc3M9InV1aWQtNjQ3MWQwOGUtMzM0Ny00MzMyLTkxNDItYWExNDUzODY5NWUwIiBwb2ludHM9IjUuNDMgMi42OCA1LjgxIDMuMDYgNS4wNCAzLjgzIDUuODEgNC42IDUuNDMgNC45OSA0LjY2IDQuMjIgMy44OSA0Ljk5IDMuNSA0LjYgNC4yNyAzLjgzIDMuNSAzLjA2IDMuODkgMi42OCA0LjY2IDMuNDUgNS40MyAyLjY4Ii8+CiAgICAgIDxnPgogICAgICAgIDxyZWN0IGNsYXNzPSJ1dWlkLTY0NzFkMDhlLTMzNDctNDMzMi05MTQyLWFhMTQ1Mzg2OTVlMCIgeD0iNy4xNiIgeT0iMy41NiIgd2lkdGg9IjIuNzIiIGhlaWdodD0iLjU0Ii8+CiAgICAgICAgPGc+CiAgICAgICAgICA8Y2lyY2xlIGNsYXNzPSJ1dWlkLTY0NzFkMDhlLTMzNDctNDMzMi05MTQyLWFhMTQ1Mzg2OTVlMCIgY3g9IjguNTIiIGN5PSIyLjc0IiByPSIuMjciLz4KICAgICAgICAgIDxjaXJjbGUgY2xhc3M9InV1aWQtNjQ3MWQwOGUtMzM0Ny00MzMyLTkxNDItYWExNDUzODY5NWUwIiBjeD0iOC41MiIgY3k9IjQuOTIiIHI9Ii4yNyIvPgogICAgICAgIDwvZz4KICAgICAgPC9nPgogICAgPC9nPgogICAgPHBhdGggY2xhc3M9InV1aWQtMDliMmE2MDUtOGIyYS00YTc1LThkZmMtYTY1NGYxZjgxNzJjIiBkPSJNNC43NSwxMi41OWMxLjI0LS4zNiwyLjczLS41NCwzLjU0LTEuNjUuMTctLjI5LjA4LS40Ni0uMjYtLjQ2LS44MSwwLTEuNjIsMC0yLjQyLDAtMS4zMiwwLTIuNjQsMC0zLjk2LDBDLS4xNCwxMC40Ni0uMSw4Ljg3LjA5LDcuNTJjLjEzLTEuNDcuMzItMi45My40NS00LjQuMDgtMS4xOS45Ni0xLjkyLDEuOTgtMi4wMywxLjc4LS4xOSwzLjU2LS40NCw1LjM0LS42NiwxLjE5LS4xNSwyLjM5LS4yNywzLjU4LS40Mi45Mi0uMTIsMS44Mi42NywxLjc0LDEuNjgtLjEsMS4yNy0uMjcsMi41My0uNCwzLjc5LS4zLDIuMDguMDIsNC42Ni0yLDUuOTYtMS4wMi43Mi0yLjE4LDEuMDctMy4zOSwxLjI2LS42OS4xMS0xLjQuMTUtMi4xLjIyLS4yNC4wMi0uNDEtLjA5LS41NC0uMzRoMFpNNi4xNyw5LjE1YzEuNDEsMCwyLjgyLDAsNC4yMywwLC40NiwwLC43My0uMjMuNzgtLjY1LjA4LS42Ny4xNS0xLjM1LjIxLTIuMDMuMDgtLjc5LjE0LTEuNTguMjItMi4zNy4wNy0uNzIuMTYtMS40NC4yNC0yLjE2LjA0LS40MS0uMTUtLjYxLS41NS0uNTgtMi45NC4zMy01Ljg3LjczLTguODEsMS4wNi0uMzkuMDUtLjU5LjI0LS42My42MS0uMDguNjktLjE0LDEuMzgtLjIxLDIuMDYtLjQ4LDQuNi0xLjMzLDMuOCw0LjUzLDQuMDdoMFoiLz4KICA8L2c+Cjwvc3ZnPg==">
+
     <style>
-        /* Estilos Generales */
         body {
-            /* Imagen de fondo */
-            background-image: url('images/fondocc.png');
-            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            background-position: center center; /* Centra la imagen */
-            background-attachment: fixed; /* Hace que el fondo permanezca fijo al hacer scroll */
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            color: white; /* Cambia el color del texto para mayor contraste */
+            background-color: #f9f9f9;
         }
-
-        /* Header y Footer */
         header, footer {
             position: fixed;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para legibilidad */
+            background-color: white;
             height: 60px;
             display: flex;
             align-items: center;
@@ -39,14 +33,10 @@
             justify-content: center;
         }
         main {
-            margin: 70px auto; /* Espacio para el header fijo */
+            margin: 70px auto;
             padding: 20px;
             max-width: 1000px;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para el contenido */
-            border-radius: 15px;
         }
-
-        /* Botones de Calculadora */
         .calculator-buttons {
             text-align: center;
             margin-bottom: 10px;
@@ -66,32 +56,24 @@
             background-color: #0074BC;
             color: white;
         }
-
-        /* "Hoy es" */
         .hoy-es-container {
             text-align: center;
             margin-bottom: 20px;
         }
         .hoy-es-container p {
             font-size: 16px;
-            color: #FFD700; /* Oro para resaltar */
+            color: #333;
         }
-
-        /* Contenedor Principal */
         .main-container {
             display: flex;
             justify-content: space-between;
             align-items: stretch;
-            flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
         }
         .center-content, .right-side {
             width: 48%;
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
         }
-
-        /* Logo y Título */
         #logo img {
             height: 40px;
         }
@@ -99,7 +81,7 @@
             flex: 1; /* Ajuste para centrar el título */
             text-align: center;
             font-size: 22px;
-            color: #FFD700; /* Oro para destacar */
+            color: #0074BC;
             margin: 0; /* Eliminar márgenes predeterminados */
             cursor: pointer; /* Indicar que es clicable */
         }
@@ -115,77 +97,153 @@
             border-radius: 15px;
             font-size: 16px;
         }
-
-        /* Estilos de las Calculadoras */
+        /* Estilos de las calculadoras */
         #calculadora-dias, #calculadora-fechas, #nueva-fecha-termino, .calendar {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: white;
             padding: 20px;
             margin-top: 20px;
             border-radius: 25px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        #calculadora-dias h2, #calculadora-fechas h2, #nueva-fecha-termino h2 {
-            color: #FFD700; /* Oro para los títulos */
-            text-align: center;
+        /* Estilos para el formulario de congelamiento */
+        #formulario-congelamiento {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            position: relative; /* Para posicionar la flecha de regreso */
         }
-
-        /* Formularios */
-        .calculator-inputs {
-            text-align: center;
+        /* Flecha de regreso */
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #0074BC;
+            cursor: pointer;
+            transition: color 0.3s;
         }
-        .calculator-inputs label {
+        .back-arrow:hover {
+            color: #005b9a;
+        }
+        /* Leyenda lateral en el formulario */
+        .left-legend {
+            width: 30%;
+            padding-right: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: #333;
+        }
+        .left-legend b {
+            font-weight: bold;
+            color: #0074BC; /* Azul de los botones */
+        }
+        .form-container {
+            display: flex;
+            gap: 20px; /* Añadido para separar la leyenda de los campos */
+        }
+        .form-fields {
+            width: 70%;
+            display: flex; /* Añadido para centrar los elementos */
+            flex-direction: column;
+            align-items: center; /* Centrar los elementos horizontalmente */
+        }
+        .form-fields label {
+            display: block;
+            margin-bottom: 5px;
             font-size: 16px;
-            color: white;
+            text-align: center; /* Centrar las etiquetas */
         }
-        .calculator-inputs input[type="date"],
-        .calculator-inputs input[type="number"] {
-            width: 80%;
-            max-width: 200px;
+        .form-fields input, .form-fields textarea {
+            width: 100%;
+            max-width: 400px;
             padding: 10px;
-            margin-top: 5px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 15px;
             font-size: 16px;
             background-color: #f9f9f9;
         }
+        .form-fields textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        .form-buttons {
+            text-align: center;
+        }
+        .form-buttons button {
+            background-color: #0074BC;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .form-buttons button:hover {
+            background-color: #005b9a;
+        }
+        /* Footer */
+        footer {
+            font-size: 14px;
+            color: #888;
+        }
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+        /* Ajustes en los campos de entrada */
+        .calculator-inputs {
+            text-align: center;
+        }
+        .calculator-inputs input[type="date"],
+        .calculator-inputs input[type="number"] {
+            width: 80%;
+            max-width: 200px;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
         input[type="checkbox"] {
             margin-right: 10px;
         }
         button {
-            background-color: #FFD700;
-            color: #333;
+            background-color: #0074BC;
+            color: white;
             padding: 12px 20px;
             border: none;
             border-radius: 15px;
             font-size: 16px;
             cursor: pointer;
             align-self: center;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #FFC107;
-            color: white;
+            background-color: #005b9a;
         }
-
-        /* Resultados */
-        .calculadora-resultados {
+        h2 {
+            color: #0074BC;
             text-align: center;
-            margin-top: 20px;
-            color: #FFD700;
         }
-        .calculadora-resultados h3 {
-            color: #FFD700;
+        h3 {
+            color: #333;
         }
-
-        /* Calendario */
-        .calendar {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
+        /* Estilos para el calendario */
         .calendar-header {
             display: flex;
             justify-content: space-between;
@@ -197,11 +255,11 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #FFD700;
+            color: #0074BC;
         }
         .calendar-header h3 {
             margin: 0;
-            color: #FFD700;
+            color: #0074BC;
             font-size: 20px;
         }
         .calendar-legend {
@@ -221,115 +279,51 @@
             border-radius: 10px;
             font-size: 16px;
             transition: background-color 0.3s;
-            color: white;
         }
         .calendar th {
-            color: #FFD700;
-            background-color: rgba(0, 0, 0, 0.3);
+            color: #0074BC;
+            background-color: #f0f0f0;
             border: none;
         }
         .calendar td {
             border: none;
             cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.2);
         }
         .calendar td:hover {
-            background-color: rgba(255, 215, 0, 0.7); /* Oro al pasar el cursor */
+            background-color: #e0e0e0;
         }
         .calendar .today {
             background-color: #F6931D;
             color: white;
         }
-
-        /* Formulario de Congelamiento */
-        #formulario-congelamiento {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 25px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            display: none;
-            flex-direction: column;
-            position: relative; /* Para posicionar la flecha de regreso */
+        /* Responsive */
+        @media (max-width: 800px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .center-content, .right-side {
+                width: 100%;
+            }
+            .right-side {
+                margin-top: 20px;
+            }
+            .form-container {
+                flex-direction: column;
+                gap: 10px; /* Ajuste para dispositivos móviles */
+            }
+            .left-legend, .form-fields {
+                width: 100%;
+            }
+            .left-legend {
+                margin-bottom: 20px;
+            }
+            /* Ajustar el tamaño del texto en dispositivos pequeños */
+            .parenthetical {
+                font-size: 12px;
+            }
         }
-        /* Flecha de regreso */
-        .back-arrow {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: #FFD700;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .back-arrow:hover {
-            color: #FFC107;
-        }
-        /* Leyenda lateral en el formulario */
-        .left-legend {
-            width: 30%;
-            padding-right: 20px;
-            box-sizing: border-box;
-            font-size: 14px;
-            color: white;
-        }
-        .left-legend b {
-            font-weight: bold;
-            color: #FFD700; /* Oro */
-        }
-        .form-container {
-            display: flex;
-            gap: 20px; /* Espacio entre leyenda y campos */
-            flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
-        }
-        .form-fields {
-            width: 70%;
-            display: flex; /* Para centrar los elementos */
-            flex-direction: column;
-            align-items: center; /* Centrar los elementos horizontalmente */
-        }
-        .form-fields label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 16px;
-            text-align: center; /* Centrar las etiquetas */
-            color: white;
-        }
-        .form-fields input, .form-fields textarea {
-            width: 100%;
-            max-width: 400px;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 15px;
-            font-size: 16px;
-            background-color: #f9f9f9;
-        }
-        .form-fields textarea {
-            resize: vertical;
-            height: 80px;
-        }
-        .form-buttons {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .form-buttons button {
-            background-color: #FFD700;
-            color: #333;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 15px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .form-buttons button:hover {
-            background-color: #FFC107;
-            color: white;
-        }
-
-        /* Modal */
+        /* Modal Styles */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -351,7 +345,6 @@
             border-radius: 10px;
             position: relative;
             text-align: center;
-            color: #333;
         }
         .close-modal {
             color: #aaa;
@@ -369,8 +362,7 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        /* Radio Buttons Personalizados */
+        /* Estilos para los radio buttons en horizontal */
         .radio-group {
             display: flex;
             flex-direction: row;
@@ -380,8 +372,13 @@
         }
         .radio-group label {
             margin-left: 5px;
-            color: white;
         }
+        /* Estilos para el texto en paréntesis */
+        .parenthetical {
+            font-size: 14px;
+            color: #F6931D; /* Naranja */
+        }
+        /* Estilos personalizados para los radio buttons */
         .radio-group.centered {
             justify-content: center; /* Centrar los radio buttons */
         }
@@ -423,9 +420,9 @@
         }
         /* Efecto hover */
         .custom-radio:hover .radio-btn {
-            border-color: #FFD700;
+            border-color: #0074BC;
         }
-        /* Contenedor para seleccionar cliente de correo */
+        /* Centrando el radio-selection */
         .radio-selection {
             display: flex;
             flex-direction: column;
@@ -433,40 +430,6 @@
             width: 100%;
             max-width: 400px;
             margin: 0 auto;
-        }
-
-        /* Texto en Paréntesis */
-        .parenthetical {
-            font-size: 14px;
-            color: #F6931D; /* Naranja */
-        }
-
-        /* Responsive */
-        @media (max-width: 800px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .center-content, .right-side {
-                width: 100%;
-            }
-            .right-side {
-                margin-top: 20px;
-            }
-            .form-container {
-                flex-direction: column;
-                gap: 10px; /* Ajuste para dispositivos móviles */
-            }
-            .left-legend, .form-fields {
-                width: 100%;
-            }
-            .left-legend {
-                margin-bottom: 20px;
-            }
-            /* Ajustar el tamaño del texto en dispositivos pequeños */
-            .parenthetical {
-                font-size: 12px;
-            }
         }
     </style>
 </head>
@@ -519,7 +482,7 @@
                         <label for="excluir-dias">Excluir domingos y días festivos oficiales en México</label><br><br>
                         <button id="calcular-dias-btn">Calcular</button>
                     </div>
-                    <div class="calculadora-resultados">
+                    <div>
                         <h3>Fecha de finalización de congelamiento:</h3>
                         <p id="resultado-dias"></p>
                         <button id="solicitar-congelamiento-btn" style="display: none;">Solicitar congelamiento</button>
@@ -540,7 +503,7 @@
                         <label for="excluir-dias-fechas">Excluir domingos y días festivos oficiales en México</label><br><br>
                         <button id="calcular-fechas-btn">Calcular</button>
                     </div>
-                    <div class="calculadora-resultados">
+                    <div>
                         <h3>Número de días congelados:</h3>
                         <p id="resultado-fechas"></p>
                     </div>
@@ -558,7 +521,7 @@
                     <div style="text-align: center;">
                         <button id="calcular-termino-btn">Calcular</button>
                     </div>
-                    <div class="calculadora-resultados">
+                    <div>
                         <h3>Nueva fecha de término de curso:</h3>
                         <p id="resultado-termino"></p>
                     </div>
@@ -647,7 +610,7 @@
             </div>
             <div>
                 <h3>Texto generado:</h3>
-                <textarea id="texto-generado" readonly style="width: 100%; height: 200px; border-radius: 10px;"></textarea>
+                <textarea id="texto-generado" readonly style="width: 100%; height: 200px;"></textarea>
                 <div class="form-buttons">
                     <button id="copiar-texto-btn">Copiar texto</button>
                 </div>
