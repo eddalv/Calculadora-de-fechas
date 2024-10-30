@@ -512,7 +512,7 @@
                     <div class="calculator-inputs">
                         <label for="fecha-inicio-termino">Fecha inicial de término de curso:</label><br>
                         <input type="date" id="fecha-inicio-termino"><br>
-                        <label for="dias-a-sumar-termino">Número de días a sumar (15 a 90):</label><br>
+                        <label for="dias-a-sumar-termino">Número de días congelados (15 a 90):</label><br>
                         <input type="number" id="dias-a-sumar-termino" min="15" max="90"><br>
                     </div>
                     <div style="text-align: center;">
@@ -625,7 +625,7 @@
     
     <!-- Footer -->
     <footer>
-        Designed by Héctor Eduardo Alvarez Alanis, 2024.
+        Designed by Héctor Eduardo Alvarez Alanis. 2024.
     </footer>
     
     <!-- JavaScript -->
@@ -963,19 +963,22 @@
             let diasASumarTermino = parseInt(document.getElementById('dias-a-sumar-termino').value);
 
             if (!fechaInicioTermino || isNaN(diasASumarTermino)) {
-                showModal('Por favor ingrese la fecha inicial de término y el número de días a sumar.');
+                showModal('Por favor ingrese la fecha inicial de término y el número de días congelados.');
                 return;
             }
 
             // Validar rango de días
             if (diasASumarTermino < 15 || diasASumarTermino > 90) {
-                showModal('El número de días a sumar debe ser entre 15 y 90.');
+                showModal('El número de días congelados debe ser entre 15 y 90.');
                 return;
             }
 
             let fecha = new Date(fechaInicioTermino);
             fecha.setHours(0,0,0,0); // Asegurar que la hora sea 00:00:00
             let diasSumados = 0;
+
+            // Sumar días adicionales
+            diasASumarTermino += 1; // Sumar 1 día adicional
 
             // Contar días de forma inclusiva
             while (diasSumados < diasASumarTermino) {
