@@ -385,8 +385,8 @@
     <main>
         <!-- Botones para seleccionar calculadoras -->
         <div class="calculator-buttons">
-            <button id="calculadora-dias-btn" class="active">Calculadora de Días</button>
-            <button id="calculadora-fechas-btn">Calculadora de Fechas</button>
+            <button id="calculadora-dias-btn" class="active">Calculadora de congelamientos</button>
+            <button id="calculadora-fechas-btn">Calculadora de días congelados</button>
             <button id="resta-dias-btn">Resta días</button>
         </div>
 
@@ -398,14 +398,14 @@
         <div class="main-container" id="main-content">
             <!-- Centro: Calculadoras -->
             <div class="center-content">
-                <!-- Calculadora de Días -->
+                <!-- Calculadora de congelamientos -->
                 <div id="calculadora-dias">
-                    <h2>Calculadora de Días</h2>
+                    <h2>Calculadora de congelamientos</h2>
                     <div class="calculator-inputs">
                         <label for="fecha-inicial">Fecha Inicial:</label><br>
                         <input type="date" id="fecha-inicial" min="">
                         <br>
-                        <label for="dias-a-sumar">Número de días a sumar (15 a 90):</label><br>
+                        <label for="dias-a-sumar">Número de días a congelar (15 a 90):</label><br>
                         <input type="number" id="dias-a-sumar" min="15" max="90"><br>
                     </div>
                     <div style="text-align: center;">
@@ -414,7 +414,7 @@
                         <button id="calcular-dias-btn">Calcular</button>
                     </div>
                     <div>
-                        <h3>Fecha Resultado:</h3>
+                        <h3>Fecha de finalización de congelamiento:</h3>
                         <p id="resultado-dias"></p>
                         <button id="solicitar-congelamiento-btn" style="display: none;">Solicitar congelamiento</button>
                     </div>
@@ -422,7 +422,7 @@
                 
                 <!-- Calculadora de Fechas -->
                 <div id="calculadora-fechas" style="display:none;">
-                    <h2>Calculadora de Fechas</h2>
+                    <h2>Calculadora de días congelados</h2>
                     <div class="calculator-inputs">
                         <label for="fecha1">Fecha 1:</label><br>
                         <input type="date" id="fecha1"><br>
@@ -435,7 +435,7 @@
                         <button id="calcular-fechas-btn">Calcular</button>
                     </div>
                     <div>
-                        <h3>Número de días:</h3>
+                        <h3>Número de días congelados:</h3>
                         <p id="resultado-fechas"></p>
                     </div>
                 </div>
@@ -759,7 +759,7 @@
             let excluirDias = document.getElementById('excluir-dias').checked;
 
             if (!fechaInicial || !diasASumar) {
-                showModal('Por favor ingrese la fecha inicial y el número de días a sumar.');
+                showModal('Por favor ingrese la fecha inicial y el número de días a congelar.');
                 return;
             }
 
@@ -776,7 +776,7 @@
 
             // Validar rango de días
             if (diasASumar < 15 || diasASumar > 90) {
-                showModal('El número de días a sumar debe estar entre 15 y 90.');
+                showModal('El número de días a congelar debe estar entre 15 y 90.');
                 return;
             }
 
