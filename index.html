@@ -56,6 +56,11 @@
             background-color: #0074BC;
             color: white;
         }
+        /* Nueva clase para el botón "Mostrar días" */
+        .calculator-buttons .show-days-btn {
+            background-color: #F6931D; /* Naranja */
+            color: white;
+        }
         .hoy-es-container {
             text-align: center;
             margin-bottom: 20px;
@@ -288,6 +293,7 @@
         .calendar td {
             border: none;
             cursor: pointer;
+            position: relative; /* Para posicionar el marcador */
         }
         .calendar td:hover {
             background-color: #e0e0e0;
@@ -295,6 +301,28 @@
         .calendar .today {
             background-color: #F6931D;
             color: white;
+        }
+        /* Nuevo Estilo para los Días Marcados */
+        .marked-day {
+            background-color: #F6931D !important;
+            color: white;
+            position: relative;
+        }
+        .marked-day::after {
+            content: attr(data-count);
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #F6931D;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
         }
         /* Responsive */
         @media (max-width: 800px) {
@@ -337,99 +365,88 @@
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
+            margin: 5% auto; /* 5% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 500px;
+            width: 90%; /* Could be more or less, depending on screen size */
+            max-width: 800px;
             border-radius: 10px;
             position: relative;
             text-align: center;
         }
-        .close-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            cursor: pointer;
-        }
-        .close-modal:hover,
-        .close-modal:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* Estilos para los radio buttons en horizontal */
-        .radio-group {
+        /* Nuevo Contenido para el Calendario en el Modal */
+        .modal-calendar-header {
             display: flex;
-            flex-direction: row;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
-        .radio-group label {
-            margin-left: 5px;
-        }
-        /* Estilos para el texto en paréntesis */
-        .parenthetical {
-            font-size: 14px;
-            color: #F6931D; /* Naranja */
-        }
-        /* Estilos personalizados para los radio buttons */
-        .radio-group.centered {
-            justify-content: center; /* Centrar los radio buttons */
-        }
-        .custom-radio {
-            display: flex;
-            align-items: center;
+        .modal-calendar-header button {
+            background-color: transparent;
+            border: none;
+            font-size: 24px;
             cursor: pointer;
+            color: #0074BC;
+        }
+        .modal-calendar-header h3 {
+            margin: 0;
+            color: #0074BC;
+            font-size: 20px;
+        }
+        /* Calendario en el Modal */
+        #modal-calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #modal-calendar-table th, #modal-calendar-table td {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        #modal-calendar-table th {
+            color: #0074BC;
+            background-color: #f0f0f0;
+            border: none;
+        }
+        #modal-calendar-table td {
+            border: none;
+            cursor: default;
             position: relative;
         }
-        /* Ocultar el radio button original */
-        .custom-radio input[type="radio"] {
-            display: none;
+        #modal-calendar-table td:hover {
+            background-color: #e0e0e0;
         }
-        /* Crear el radio button personalizado */
-        .custom-radio .radio-btn {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px; /* Esquinas redondeadas */
-            margin-right: 8px;
-            transition: background-color 0.3s, border-color 0.3s;
+        #modal-calendar-table .today {
+            background-color: #F6931D;
+            color: white;
         }
-        /* Cambiar el color cuando está seleccionado */
-        /* Gmail: Rojo */
-        #gmail:checked + .radio-btn {
-            background-color: red;
-            border-color: red;
+        /* Nuevo Estilo para los Días Marcados en el Modal */
+        #modal-calendar-table .marked-day {
+            background-color: #F6931D !important;
+            color: white;
+            position: relative;
         }
-        /* Outlook: Azul */
-        #outlook:checked + .radio-btn {
-            background-color: blue;
-            border-color: blue;
-        }
-        /* Otro: Gris */
-        #otro:checked + .radio-btn {
-            background-color: gray;
-            border-color: gray;
-        }
-        /* Efecto hover */
-        .custom-radio:hover .radio-btn {
-            border-color: #0074BC;
-        }
-        /* Centrando el radio-selection */
-        .radio-selection {
+        #modal-calendar-table .marked-day::after {
+            content: attr(data-count);
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #F6931D;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        /* Botón "Mostrar días" estilizado */
+        .calculator-buttons .show-days-btn:hover {
+            background-color: #D57F14; /* Un tono más oscuro de naranja */
         }
     </style>
 </head>
@@ -481,6 +498,8 @@
                         <input type="checkbox" id="excluir-dias" checked>
                         <label for="excluir-dias">Excluir domingos y días festivos oficiales en México</label><br><br>
                         <button id="calcular-dias-btn">Calcular</button>
+                        <!-- Nuevo Botón "Mostrar días" -->
+                        <button id="mostrar-dias-dias-btn" class="show-days-btn" style="display: none;">Mostrar días</button>
                     </div>
                     <div>
                         <h3>Fecha de finalización de congelamiento:</h3>
@@ -502,6 +521,8 @@
                         <input type="checkbox" id="excluir-dias-fechas" checked>
                         <label for="excluir-dias-fechas">Excluir domingos y días festivos oficiales en México</label><br><br>
                         <button id="calcular-fechas-btn">Calcular</button>
+                        <!-- Nuevo Botón "Mostrar días" -->
+                        <button id="mostrar-dias-fechas-btn" class="show-days-btn" style="display: none;">Mostrar días</button>
                     </div>
                     <div>
                         <h3>Número de días congelados:</h3>
@@ -520,6 +541,8 @@
                     </div>
                     <div style="text-align: center;">
                         <button id="calcular-termino-btn">Calcular</button>
+                        <!-- Nuevo Botón "Mostrar días" -->
+                        <button id="mostrar-dias-termino-btn" class="show-days-btn" style="display: none;">Mostrar días</button>
                     </div>
                     <div>
                         <h3>Nueva fecha de término de curso:</h3>
@@ -618,11 +641,22 @@
         </div>
     </main>
     
-    <!-- Modal para Pop-ups -->
+    <!-- Modal para Pop-ups y Calendario de Días Contados -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
             <p id="modal-message"></p>
+            <!-- Nuevo Contenido para el Calendario en el Modal -->
+            <div id="modal-calendar-container" style="display: none;">
+                <div class="modal-calendar-header">
+                    <button id="modal-prev-month">&lt;</button>
+                    <h3 id="modal-calendar-month-year"></h3>
+                    <button id="modal-next-month">&gt;</button>
+                </div>
+                <table id="modal-calendar-table">
+                    <!-- El calendario será generado por JavaScript -->
+                </table>
+            </div>
         </div>
     </div>
     
@@ -649,11 +683,11 @@
         today.setHours(0,0,0,0); // Establecer a medianoche para comparación
         document.getElementById('hoy-es').innerText = 'Hoy es: ' + formatDate(today);
 
-        // Variables para el calendario
+        // Variables para el calendario principal
         let currentMonth = today.getMonth();
         let currentYear = today.getFullYear();
 
-        // Generar calendario
+        // Generar calendario principal
         function generateCalendar(month, year) {
             const calendarTable = document.getElementById('calendar-table');
             const monthYearHeader = document.getElementById('calendar-month-year');
@@ -698,10 +732,10 @@
             }
         }
 
-        // Inicializar calendario
+        // Inicializar calendario principal
         generateCalendar(currentMonth, currentYear);
 
-        // Funciones para cambiar de mes
+        // Funciones para cambiar de mes en el calendario principal
         document.getElementById('prev-month').addEventListener('click', function() {
             currentMonth--;
             if (currentMonth < 0) {
@@ -751,17 +785,20 @@
             document.getElementById('excluir-dias').checked = true;
             document.getElementById('resultado-dias').innerText = '';
             document.getElementById('solicitar-congelamiento-btn').style.display = 'none';
+            document.getElementById('mostrar-dias-dias-btn').style.display = 'none';
 
             // Reset Calculadora de días congelados
             document.getElementById('fecha1').value = '';
             document.getElementById('fecha2').value = '';
             document.getElementById('excluir-dias-fechas').checked = true;
             document.getElementById('resultado-fechas').innerText = '';
+            document.getElementById('mostrar-dias-fechas-btn').style.display = 'none';
 
             // Reset Nueva fecha de término
             document.getElementById('fecha-inicio-termino').value = '';
             document.getElementById('dias-a-sumar-termino').value = '';
             document.getElementById('resultado-termino').innerText = '';
+            document.getElementById('mostrar-dias-termino-btn').style.display = 'none';
 
             // Reset Solicitud de congelamiento
             document.getElementById('formulario-congelamiento').style.display = 'none';
@@ -824,6 +861,119 @@
             }
         }
 
+        // Variables para almacenar los días contados en cada calculadora
+        let countedDaysDias = [];       // Para "Calculadora de congelamientos"
+        let countedDaysFechas = [];     // Para "Calculadora de días congelados"
+        let countedDaysTermino = [];    // Para "Nueva fecha de término"
+
+        // Función para mostrar el calendario flotante con días contados
+        function showCountedDaysCalendar(countedDays) {
+            if (countedDays.length === 0) {
+                showModal('No hay días contados para mostrar.');
+                return;
+            }
+
+            // Mostrar el calendario en el modal
+            document.getElementById('modal-calendar-container').style.display = 'block';
+
+            // Sort the countedDays by date
+            countedDays.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Map dates to their counts for easy lookup
+            let countedMap = {};
+            countedDays.forEach(item => {
+                countedMap[item.date] = item.count;
+            });
+
+            // Determine the range of months to display
+            let firstDate = new Date(countedDays[0].date);
+            let lastDate = new Date(countedDays[countedDays.length - 1].date);
+
+            // Initialize modal calendar to the month of the first counted day
+            let modalCurrentMonth = firstDate.getMonth();
+            let modalCurrentYear = firstDate.getFullYear();
+
+            // Render the modal calendar
+            function renderModalCalendar(month, year) {
+                const modalCalendarTable = document.getElementById('modal-calendar-table');
+                const modalMonthYearHeader = document.getElementById('modal-calendar-month-year');
+                modalCalendarTable.innerHTML = '';
+                const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                modalMonthYearHeader.innerText = months[month] + ' ' + year;
+
+                const daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                let headerRow = document.createElement('tr');
+                for (let day of daysOfWeek) {
+                    let th = document.createElement('th');
+                    th.innerText = day;
+                    headerRow.appendChild(th);
+                }
+                modalCalendarTable.appendChild(headerRow);
+
+                let firstDay = new Date(year, month, 1);
+                let startingDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+                let totalDays = new Date(year, month + 1, 0).getDate();
+                let dateCount = 1;
+
+                for (let i = 0; i < 6; i++) {
+                    let row = document.createElement('tr');
+                    for (let j = 0; j < 7; j++) {
+                        let cell = document.createElement('td');
+                        if (i === 0 && j < startingDay) {
+                            cell.innerText = '';
+                        } else if (dateCount > totalDays) {
+                            cell.innerText = '';
+                        } else {
+                            let cellDate = new Date(year, month, dateCount);
+                            let cellDateISO = cellDate.toISOString().split('T')[0];
+                            cell.innerText = dateCount;
+
+                            // Resaltar el día actual
+                            if (cellDateISO === today.toISOString().split('T')[0]) {
+                                cell.classList.add('today');
+                            }
+
+                            // Si el día está en los días contados, marcarlo
+                            if (countedMap[cellDateISO]) {
+                                cell.classList.add('marked-day');
+                                cell.setAttribute('data-count', countedMap[cellDateISO]);
+                            }
+
+                            dateCount++;
+                        }
+                        row.appendChild(cell);
+                    }
+                    modalCalendarTable.appendChild(row);
+                }
+            }
+
+            // Inicializar el calendario flotante
+            renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+
+            // Funciones para cambiar de mes en el calendario flotante
+            document.getElementById('modal-prev-month').addEventListener('click', function() {
+                modalCurrentMonth--;
+                if (modalCurrentMonth < 0) {
+                    modalCurrentMonth = 11;
+                    modalCurrentYear--;
+                }
+                renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+            });
+
+            document.getElementById('modal-next-month').addEventListener('click', function() {
+                modalCurrentMonth++;
+                if (modalCurrentMonth > 11) {
+                    modalCurrentMonth = 0;
+                    modalCurrentYear++;
+                }
+                renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+            });
+
+            // Render the first time
+            renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+        }
+
         // Calculadora de congelamientos
         document.getElementById('calcular-dias-btn').addEventListener('click', async function() {
             let fechaInicial = document.getElementById('fecha-inicial').value;
@@ -871,8 +1021,10 @@
                 }
             }
 
-            // Contar días de forma inclusiva
+            // Contar días de forma inclusiva y almacenar las fechas contadas
             let currentDate = new Date(fecha);
+            let countedDays = [];
+            let count = 1;
 
             while (diasSumados < diasASumar) {
                 // Incrementar día
@@ -884,6 +1036,8 @@
                     continue;
                 }
                 diasSumados++;
+                countedDays.push({ date: formattedDate, count: count });
+                count++;
             }
 
             // Formatear la fecha resultado
@@ -892,10 +1046,13 @@
 
             document.getElementById('resultado-dias').innerText = fechaResultado;
             document.getElementById('solicitar-congelamiento-btn').style.display = 'inline-block';
+            document.getElementById('mostrar-dias-dias-btn').style.display = 'inline-block';
 
             // Guardar fechas para el formulario
             window.fechaInicioCongelamiento = fechaInicial;
             window.fechaFinCongelamiento = currentDate.toISOString().split('T')[0];
+            // Guardar días contados
+            countedDaysDias = countedDays;
         });
 
         // Calculadora de días congelados
@@ -943,6 +1100,8 @@
             }
 
             let currentDate = new Date(startDate);
+            let countedDays = [];
+            let count = 1;
 
             for (let i = 0; i < totalDays; i++) {
                 let dayOfWeek = currentDate.getDay();
@@ -952,12 +1111,18 @@
                     // Excluir este día
                 } else {
                     daysCount++;
+                    countedDays.push({ date: formattedDate, count: count });
+                    count++;
                 }
 
                 currentDate.setDate(currentDate.getDate() + 1);
             }
 
             document.getElementById('resultado-fechas').innerText = daysCount + ' días';
+            document.getElementById('mostrar-dias-fechas-btn').style.display = 'inline-block';
+
+            // Guardar días contados
+            countedDaysFechas = countedDays;
         });
 
         // Nueva fecha de término
@@ -983,10 +1148,15 @@
             // Sumar días adicionales
             diasASumarTermino += 1; // Sumar 1 día adicional
 
-            // Contar días de forma inclusiva
+            // Contar días de forma inclusiva y almacenar las fechas contadas
+            let countedDays = [];
+            let count = 1;
+
             while (diasSumados < diasASumarTermino) {
                 fecha.setDate(fecha.getDate() + 1);
                 diasSumados++;
+                countedDays.push({ date: fecha.toISOString().split('T')[0], count: count });
+                count++;
             }
 
             // Formatear la fecha resultado
@@ -994,6 +1164,10 @@
             let fechaResultado = fecha.toLocaleDateString('es-ES', options);
 
             document.getElementById('resultado-termino').innerText = fechaResultado;
+            document.getElementById('mostrar-dias-termino-btn').style.display = 'inline-block';
+
+            // Guardar días contados
+            countedDaysTermino = countedDays;
         });
 
         // Mostrar formulario de congelamiento para "Calculadora de congelamientos"
@@ -1030,19 +1204,23 @@
         const modal = document.getElementById('custom-modal');
         const modalMessage = document.getElementById('modal-message');
         const closeModalBtn = document.getElementById('close-modal');
+        const modalCalendarContainer = document.getElementById('modal-calendar-container');
 
         function showModal(message) {
             modalMessage.innerText = message;
             modal.style.display = 'block';
+            modalCalendarContainer.style.display = 'none'; // Ocultar el calendario flotante si está abierto
         }
 
         closeModalBtn.onclick = function() {
             modal.style.display = 'none';
+            modalCalendarContainer.style.display = 'none'; // Ocultar el calendario flotante si está abierto
         }
 
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
+                modalCalendarContainer.style.display = 'none'; // Ocultar el calendario flotante si está abierto
             }
         }
 
@@ -1120,6 +1298,141 @@ Motivo: ${motivo}`;
         document.getElementById('header-title').addEventListener('click', function() {
             location.reload();
         });
+
+        // Asignar eventos a los nuevos botones "Mostrar días"
+        document.getElementById('mostrar-dias-dias-btn').addEventListener('click', function() {
+            if (countedDaysDias.length === 0) {
+                showModal('No hay días contados para mostrar.');
+                return;
+            }
+            showCountedDaysCalendar(countedDaysDias);
+        });
+
+        document.getElementById('mostrar-dias-fechas-btn').addEventListener('click', function() {
+            if (countedDaysFechas.length === 0) {
+                showModal('No hay días contados para mostrar.');
+                return;
+            }
+            showCountedDaysCalendar(countedDaysFechas);
+        });
+
+        document.getElementById('mostrar-dias-termino-btn').addEventListener('click', function() {
+            if (countedDaysTermino.length === 0) {
+                showModal('No hay días contados para mostrar.');
+                return;
+            }
+            showCountedDaysCalendar(countedDaysTermino);
+        });
+
+        // Función para mostrar el calendario flotante con días contados
+        function showCountedDaysCalendar(countedDays) {
+            if (countedDays.length === 0) {
+                showModal('No hay días contados para mostrar.');
+                return;
+            }
+
+            // Mostrar el calendario en el modal
+            modal.style.display = 'block';
+            modalMessage.innerText = 'Días Contados:';
+            modalCalendarContainer.style.display = 'block';
+
+            // Sort the countedDays by date
+            countedDays.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Map dates to their counts for easy lookup
+            let countedMap = {};
+            countedDays.forEach(item => {
+                countedMap[item.date] = item.count;
+            });
+
+            // Determine the range of months to display
+            let firstDate = new Date(countedDays[0].date);
+            let lastDate = new Date(countedDays[countedDays.length - 1].date);
+
+            // Initialize modal calendar to the month of the first counted day
+            let modalCurrentMonth = firstDate.getMonth();
+            let modalCurrentYear = firstDate.getFullYear();
+
+            // Render the modal calendar
+            function renderModalCalendar(month, year) {
+                const modalCalendarTable = document.getElementById('modal-calendar-table');
+                const modalMonthYearHeader = document.getElementById('modal-calendar-month-year');
+                modalCalendarTable.innerHTML = '';
+                const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                modalMonthYearHeader.innerText = months[month] + ' ' + year;
+
+                const daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                let headerRow = document.createElement('tr');
+                for (let day of daysOfWeek) {
+                    let th = document.createElement('th');
+                    th.innerText = day;
+                    headerRow.appendChild(th);
+                }
+                modalCalendarTable.appendChild(headerRow);
+
+                let firstDay = new Date(year, month, 1);
+                let startingDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+                let totalDays = new Date(year, month + 1, 0).getDate();
+                let dateCount = 1;
+
+                for (let i = 0; i < 6; i++) {
+                    let row = document.createElement('tr');
+                    for (let j = 0; j < 7; j++) {
+                        let cell = document.createElement('td');
+                        if (i === 0 && j < startingDay) {
+                            cell.innerText = '';
+                        } else if (dateCount > totalDays) {
+                            cell.innerText = '';
+                        } else {
+                            let cellDate = new Date(year, month, dateCount);
+                            let cellDateISO = cellDate.toISOString().split('T')[0];
+                            cell.innerText = dateCount;
+
+                            // Resaltar el día actual
+                            if (cellDateISO === today.toISOString().split('T')[0]) {
+                                cell.classList.add('today');
+                            }
+
+                            // Si el día está en los días contados, marcarlo
+                            if (countedMap[cellDateISO]) {
+                                cell.classList.add('marked-day');
+                                cell.setAttribute('data-count', countedMap[cellDateISO]);
+                            }
+
+                            dateCount++;
+                        }
+                        row.appendChild(cell);
+                    }
+                    modalCalendarTable.appendChild(row);
+                }
+            }
+
+            // Inicializar el calendario flotante
+            renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+
+            // Funciones para cambiar de mes en el calendario flotante
+            document.getElementById('modal-prev-month').addEventListener('click', function() {
+                modalCurrentMonth--;
+                if (modalCurrentMonth < 0) {
+                    modalCurrentMonth = 11;
+                    modalCurrentYear--;
+                }
+                renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+            });
+
+            document.getElementById('modal-next-month').addEventListener('click', function() {
+                modalCurrentMonth++;
+                if (modalCurrentMonth > 11) {
+                    modalCurrentMonth = 0;
+                    modalCurrentYear++;
+                }
+                renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+            });
+
+            // Render the first time
+            renderModalCalendar(modalCurrentMonth, modalCurrentYear);
+        }
     </script>
 </body>
 </html>
